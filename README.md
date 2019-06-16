@@ -97,6 +97,20 @@ module.exports = {
 
 * [create-react-appでbuild先のパスを変更する](https://qiita.com/yakimeron/items/7a4f8d9e70a4a2b1b96b)
 
+#### 外部にClassを作って読み込んだらエラーになる
+
+どうやら、ReactではそのままだとECMAScript2016以降の書き方をしているとうまく拾ってくれないらしい。
+よって、`babelify` `babel-preset-es2015` `babel-preset-react` を追加で入れる必要がある。
+
+```sh
+yarn add babelify babel-preset-es2015 babel-preset-react
+```
+この状態でサイドreactを立ち上げるとうまくいく
+
+【参考】
+
+* [ES5のReact.jsソースをES6ベースに書き換える](https://qiita.com/kuniken/items/2e850daa26a10b5098d6)
+
 ## デザイン系で参考にしたもの
 
 * [配色アイデア手帖 めくって見つける新しいデザインの本［完全保存版］ [ 桜井 輝子 ]](https://hb.afl.rakuten.co.jp/hgc/18ab110a.e78ad517.18ab110b.3a837bfb/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbook%2F15176294%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbook%2Fi%2F18822066%2F&link_type=text&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJ0ZXh0Iiwic2l6ZSI6IjI0MHgyNDAiLCJuYW0iOjEsIm5hbXAiOiJyaWdodCIsImNvbSI6MSwiY29tcCI6ImRvd24iLCJwcmljZSI6MSwiYm9yIjoxLCJjb2wiOjEsImJidG4iOjF9)
