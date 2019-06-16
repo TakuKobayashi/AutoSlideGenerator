@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+const googleOAuth = require("./lambda/google-oauth/index");
+const slideGenerate = require("./lambda/slide-generate/index");
 
 const port = process.env.PORT || 3100;
 
@@ -11,6 +13,10 @@ const server = http.createServer(app).listen(port, function() {
   console.log('Server listening at port %d', port);
 });
 
-app.get('/', function(req, res) {
-  res.json({});
+app.get('/googleOauth', async function(req, res) {
+  res.json(await googleOAuth.handler(req.query));
+});
+
+app.get('/slideGenerate', async function(req, res) {
+  res.json(await slideGenerate.handler(req.query));
 });
