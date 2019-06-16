@@ -1,5 +1,8 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
+app.use(cors());
+
 const googleOAuth = require("./lambda/google-oauth/index");
 const slideGenerate = require("./lambda/slide-generate/index");
 
