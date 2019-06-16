@@ -105,11 +105,53 @@ module.exports = {
 ```sh
 yarn add babelify babel-preset-es2015 babel-preset-react
 ```
-この状態でサイドreactを立ち上げるとうまくいく
+
+この状態で再度reactを立ち上げるとうまくいく。
+また、この場合、HTMLの`class=`などの書き方は`className=`にするよう、よりReactっぽい書き方を要求されるようになる。
 
 【参考】
 
 * [ES5のReact.jsソースをES6ベースに書き換える](https://qiita.com/kuniken/items/2e850daa26a10b5098d6)
+
+#### async/awaitが使えない
+
+上記の内容に加えて、async/awaitはECMAScript2017以降に出てきたものなので、これに対応したものもいれないとうまくいかない。
+よって、`babel-preset-es2017` を追加で入れれば解決する。
+
+```sh
+yarn add babel-preset-es2017
+```
+
+ただし、async/awaitで読み込こむことができても、非同期処理のため、`onSubmit` にフックするようにする前に、`event`をストップさせる必要があるので、通常の`function` と併用する必要がある。
+
+#### localhostのAPIにrequestしたらエラーになった
+
+expressで起動しているserverはlocalhostからrequestを受け取ると以下のようなエラーが出る。
+
+`react has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.`
+
+これは[Express](https://github.com/expressjs/express)側の問題で[CORS](https://github.com/expressjs/cors)というライブラリを使うようにしたら解決する。
+
+```sh
+yarn add cors
+```
+
+そして、以下のように修正する
+
+```javascript
+var express = require('express');
+// Import the library:
+var cors = require('cors');
+
+var app = express();
+
+// Then use it before your routes are set up:
+app.use(cors());
+```
+
+【参考】
+
+* [Access-Control-Allow-Origin: Dealing with CORS Errors in React and Express](https://daveceddia.com/access-control-allow-origin-cors-errors-in-react-express/)
 
 ## デザイン系で参考にしたもの
 
