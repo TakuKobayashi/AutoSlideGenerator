@@ -124,6 +124,15 @@ yarn add babel-preset-es2017
 
 ただし、async/awaitで読み込こむことができても、非同期処理のため、`onSubmit` にフックするようにする前に、`event`をストップさせる必要があるので、通常の`function` と併用する必要がある。
 
+#### 環境変数を使いたい
+Reactはデフォルトで`dotenv`をインストールしていて、buildする時にここに設定されたものを読み込んでくれる。そのため`.env`ファイルを作成したら、そこで設定した値を読み込んで実行してくれる。
+`${paths.dotenv}.${NODE_ENV}.local`, `${paths.dotenv}.${NODE_ENV}` で`.env`ファイルを読み込んでくれるので環境ごとに実行結果を分けることもできる。
+例えば`development`で`local`の環境変数を使いたい場合、`.env.development.local`というファイルを作って、そこに環境変数を埋め込めばいい。同様に`production` ならば `.env.production`というファイルを作ればいい。
+
+【参考】
+
+* [Reactにおける環境変数を設定について、ようやく理解したので原因と共にまとめてみる_100DaysOfCodeチャレンジ38日目(Day_38:#100DaysOfCode)](https://qiita.com/yuta-ushijima/items/a653e9ca4847276f19cd)
+
 #### localhostのAPIにrequestしたらエラーになった
 
 expressで起動しているserverはlocalhostからrequestを受け取ると以下のようなエラーが出る。
