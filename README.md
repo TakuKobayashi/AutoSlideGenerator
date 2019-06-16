@@ -1,7 +1,9 @@
 # AutoSlideGenerator
 
 自動でなんかプレズンスライド作れちゃうものです。
+
 [AutoSlideGenerator](https://takukobayashi.github.io/AutoSlideGenerator/)
+
 個人的にあったらいいなと思ったので作りました。
 
 ## 使っている技術やツール
@@ -49,7 +51,9 @@ npm start
 npm run eject
 ```
 
-### Buildした時に画面が真っ白になる件の対策
+### Tips
+
+#### Buildした時に画面が真っ白になる件の対策
 
 どうやら、ReactでBuildすると絶対パスで読み込められてしまうようです。
 対策として`package.json`に以下のように`"homepage": "."`と追加することで、`build`した時に相対パスを読み込んでくれるようになる。
@@ -60,11 +64,38 @@ npm run eject
 
 ※ Github Pagesなどにdeployした時にうまく反映されないことがある。その時はブラウザのキャッシュを消すことを試してみるといい。
 
-#### 参考
+【参考】
 
 * [[フロントエンド] create-react-appのビルド結果で、js/cssを相対パスで読み込みたい](https://www.yoheim.net/blog.php?q=20180418)
 
 他
+
+#### Build先のディレクトリを変更する
+
+Github Pagesに出力したいので`build`ディレクトリではなく`一つ前のdocs`ディレクトリに出力してくれると楽なので調整を入れたい。
+その場合は `/config/paths.js` の
+
+```javascript
+module.exports = {
+  dotenv: resolveApp('.env'),
+  appBuild: resolveApp('build'),
+  ...
+```
+
+を
+
+```javascript
+module.exports = {
+  dotenv: resolveApp('.env'),
+  appBuild: resolveApp('../docs'),
+  ...
+```
+
+このように変更すればいい。
+
+【参考】
+
+* [create-react-appでbuild先のパスを変更する](https://qiita.com/yakimeron/items/7a4f8d9e70a4a2b1b96b)
 
 ## デザイン系で参考にしたもの
 
