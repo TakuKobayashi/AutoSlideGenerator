@@ -10,11 +10,14 @@ export default class GenerateSlideForm extends React.Component{
   }
 
   generateSlideSubmit(event){
-    console.log(process.env.REACT_APP_API_ROOT_URL);
-    axios.get(process.env.REACT_APP_API_ROOT_URL).then(res => {
-      console.log(res);
-    })
+    this.generateSlideRequest(event);
     event.preventDefault();
+  }
+
+  async generateSlideRequest(event){
+    console.log(process.env.REACT_APP_API_ROOT_URL);
+    const res = await axios.get(process.env.REACT_APP_API_ROOT_URL + "/slideGenerate")
+    console.log(res);
   }
 
   render(){
