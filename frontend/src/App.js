@@ -1,7 +1,8 @@
 import React from 'react';
-import logo from './logo.svg';
+import logo from './AutoSlideGeneratorLogo.png';
 import './App.css';
 import purecss from 'purecss';
+
 
 function App() {
   return (
