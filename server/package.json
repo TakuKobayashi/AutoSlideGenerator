@@ -4,7 +4,7 @@
   "main": "server.js",
   "scripts": {
     "build": "node lambdaBuild.js",
-    "format": "prettier --config .prettierrc --write 'lambda/**/*.{ts,js}'"
+    "format": "prettier --config .prettierrc --write '{lambda,libs}/**/*.{ts,js}'"
   },
   "author": "TakuKobayashi",
   "private": true,

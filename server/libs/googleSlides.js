@@ -1,18 +1,24 @@
 const { google } = require('googleapis');
 const uuid = require('uuid/v4');
 
-exports.createPresentationAndSlides = async function createPresentationAndSlides(credentials, presentationProperty = {}, resourceObjects = []) {
+const GOOGLE_SLIDE_API_VERSION = 'v1';
+
+exports.createPresentationAndSlides = async function createPresentationAndSlides(
+  credentials,
+  presentationProperty = {},
+  resourceObjects = [],
+) {
   const oauth2Client = new google.auth.OAuth2(process.env.GOOGLE_OAUTH_CLIENT_ID, process.env.GOOGLE_OAUTH_CLIENT_SECRET);
   oauth2Client.setCredentials(credentials);
-  const googleSlides = google.slides({version: "v1", auth: oauth2Client})
-  const newPresentationResponse = await googleSlides.presentations.create(presentationProperty)
+  const googleSlides = google.slides({ version: GOOGLE_SLIDE_API_VERSION, auth: oauth2Client });
+  const newPresentationResponse = await googleSlides.presentations.create(presentationProperty);
   // newPresentationResponse.data.pageSize でPresentationの幅、高さの情報が取れる
   const slideImageObjects = createImageSlideObjects(resourceObjects);
   const slides = await googleSlides.presentations.batchUpdate({
     presentationId: newPresentationResponse.data.presentationId,
     resource: {
       requests: slideImageObjects,
-    }
+    },
   });
   const updatePresentationResponse = await googleSlides.presentations.get(newPresentationResponse.data.presentationId);
   return updatePresentationResponse.data;
@@ -20,7 +26,7 @@ exports.createPresentationAndSlides = async function createPresentationAndSlides
 
 function createImageSlideObjects(resourceObjects = []) {
   const objects = [];
-  for (const resourceObject of resourceObjects){
+  for (const resourceObject of resourceObjects) {
     const slideObjectId = uuid();
     objects.push({
       createSlide: {
@@ -35,9 +41,9 @@ function createImageSlideObjects(resourceObjects = []) {
         url: resourceObject.image_url,
         elementProperties: {
           pageObjectId: slideObjectId,
-        }
-      }
-    })
+        },
+      },
+    });
     return objects;
   }
 }
