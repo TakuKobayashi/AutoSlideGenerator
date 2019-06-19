@@ -54,6 +54,7 @@
     "react-collapse": "^4.0.3",
     "react-dev-utils": "^9.0.1",
     "react-dom": "^16.8.6",
+    "react-google-login": "^5.0.4",
     "react-motion": "^0.5.2",
     "resolve": "1.10.0",
     "sass-loader": "7.1.0",
