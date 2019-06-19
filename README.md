@@ -162,6 +162,95 @@ app.use(cors());
 
 * [Access-Control-Allow-Origin: Dealing with CORS Errors in React and Express](https://daveceddia.com/access-control-allow-origin-cors-errors-in-react-express/)
 
+### Google Slide APIを作ってSlide作成
+#### 準備
+[Google Cloud Console](https://console.cloud.google.com/)にてAPIを登録して、Google DriveとGoogle SlideのAPIを使えるようにする。また、OAuth認証に必要な設定を解放しておく。
+
+### Reactサイドの準備
+[react-google-login](https://github.com/anthonyjgrove/react-google-login)というのがあるようなのでインストールして、ドキュメント読みながらよしなにやる。(Reactの中だけで完結しそう)
+
+### Google Slide APIを使ってGoogle Slideを新しく作る
+[google-api-nodejs-client](https://github.com/googleapis/google-api-nodejs-client)を使う。
+
+#### Google Slide APIについて
+Google Slide APIはなかなかの曲者であるので[こちら](https://developers.google.com/slides/)の`How To...`以下を参考に何ができそうなのかということの参考にしていく方がいい。
+
+#### 認証情報など
+[react-google-login](https://github.com/anthonyjgrove/react-google-login)で`accessToken`や`refreshToken`は取得済みのはずなのでこれらを用いる
+
+```javascript
+const { google } = require('googleapis');
+const oauth2Client = new google.auth.OAuth2(process.env.GOOGLE_OAUTH_CLIENT_ID, process.env.GOOGLE_OAUTH_CLIENT_SECRET);
+oauth2Client.setCredentials({access_token: accessToken}); // あるいはoauth2Client.setCredentials({refresh_token: refreshToken});
+const googleSlides = google.slides({ version: "v1", auth: oauth2Client });
+```
+
+これでうまくいってれば、`googleSlides`では各Google Slide APIを実行できるようになっているはず。
+
+#### Presentationの作成
+```javascript
+const presentationResponse = await googleSlides.presentations.create({title: "slide_name"});
+```
+上記のようなコードで新しいPresentationが作成される。APIへのリクエストは内部ではaxiosを使っているようなので、responseはaxiosのresponseと同じもの。また`create`の中が空Objectでも別に構わない。
+
+#### Presentationの中でSlide(Page)を作成
+いろんなものをよしなに作るものとして`batchUpdate`メソッドがある。Slideを作ったり何かを挿入したりする時は`batchUpdate`を呼ぶ時にいろんなものを付け加えて実行する。
+以下のような感じで実行することでGoogle Slideに各種操作ができる。
+
+```javascript
+  const slides = await googleSlides.presentations.batchUpdate({
+    presentationId: presentationResponse.data.presentationId,
+    resource: {
+      requests: [
+        requestObject,
+      ],
+    },
+  });
+```
+
+`presentationId` はpresentationを作成したときにできているはずなので、その値を用いる。
+`resource` はGoogle Slide APIにリクエストを投げる時のRequest Bodyにあたり、ここ以下の内容をJSONにしてAPIにリクエストが投げられる。
+`requests`以下には実行してほしいものの情報が列挙して並べる。`requestObject`の中身は[APIドキュメント](https://developers.google.com/slides/reference/rest/v1/presentations/request)の中の形式を形作っていれる。
+
+新しくスライドを作るのなら以下のような`createSlide`をいれた[CreateSlideRequest](https://developers.google.com/slides/reference/rest/v1/presentations/request?hl=ja#CreateSlideRequest)の形をいれる。
+
+```javascript
+  const slides = await googleSlides.presentations.batchUpdate({
+    presentationId: presentationResponse.data.presentationId,
+    resource: {
+      requests: [
+        createSlide: {
+          objectId: "slideObjectId",
+        },
+      ],
+    },
+  });
+```
+
+この時、`objectId`には5文字以上のpresentationの中で一意になるような、5文字以上の`string`を指定する。
+
+#### Slideの中に画像を挿入
+上記で作成したSlideの中に画像を挿入するには`createImage`をいれた[CreateImageRequest](https://developers.google.com/slides/reference/rest/v1/presentations/request?hl=ja#CreateImageRequest)の形をいれる。
+
+```javascript
+  const slides = await googleSlides.presentations.batchUpdate({
+    presentationId: presentationResponse.data.presentationId,
+    resource: {
+      requests: [
+        createImage: {
+          objectId: "imageObjectId",
+          url: "https://[image_url]",
+          elementProperties: {
+            pageObjectId: "slideObjectId",
+          },
+        },
+      ],
+    },
+  });
+```
+
+この時、`objectId`にはslideとは別の一意になるようなObjectIdをいれる。`pageObjectId`で画像を差し込みたいSlideを指定している。ここでは画像はURLを指定したものでなければならない。
+
 ## デザイン系で参考にしたもの
 
 * [配色アイデア手帖 めくって見つける新しいデザインの本［完全保存版］ [ 桜井 輝子 ]](https://hb.afl.rakuten.co.jp/hgc/18ab110a.e78ad517.18ab110b.3a837bfb/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbook%2F15176294%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbook%2Fi%2F18822066%2F&link_type=text&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJ0ZXh0Iiwic2l6ZSI6IjI0MHgyNDAiLCJuYW0iOjEsIm5hbXAiOiJyaWdodCIsImNvbSI6MSwiY29tcCI6ImRvd24iLCJwcmljZSI6MSwiYm9yIjoxLCJjb2wiOjEsImJidG4iOjF9)
