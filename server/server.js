@@ -20,6 +20,6 @@ app.get('/googleOauth', async function(req, res) {
   res.json(await googleOAuth.handler(req.query));
 });
 
-app.get('/slideGenerate', async function(req, res) {
+app.get('/slide/generate', async function (req, res) {
   res.json(await slideGenerate.handler(req.query));
 });
