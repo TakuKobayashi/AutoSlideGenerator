@@ -12,11 +12,23 @@ export default class GenerateSlideForm extends React.Component{
   }
 
   generateSlideSubmit(event){
-    this.generateSlideRequest(event);
+    if(Push.Permission.has()){
+      Push.Permission.request(this.onGranted, this.onDenied);
+    }else{
+      this.generateSlideRequest();
+    }
     event.preventDefault();
   }
 
-  async generateSlideRequest(event){
+  onGranted(){
+    this.generateSlideRequest();
+  }
+
+  onDenied(){
+    this.generateSlideRequest();
+  }
+
+  async generateSlideRequest(){
     console.log(process.env.REACT_APP_API_ROOT_URL);
     const res = await axios.post(process.env.REACT_APP_API_ROOT_URL + "/slide/generate")
     console.log(res);
