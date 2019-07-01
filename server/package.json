@@ -27,6 +27,7 @@
     "documentation": "^11.0.1",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
+    "node-lambda": "^0.14.0",
     "nodemon": "^1.19.1",
     "prettier": "^1.18.2"
   }
