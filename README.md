@@ -128,10 +128,23 @@ yarn add babel-preset-es2017
 Reactはデフォルトで`dotenv`をインストールしていて、buildする時にここに設定されたものを読み込んでくれる。そのため`.env`ファイルを作成したら、そこで設定した値を読み込んで実行してくれる。
 `${paths.dotenv}.${NODE_ENV}.local`, `${paths.dotenv}.${NODE_ENV}` で`.env`ファイルを読み込んでくれるので環境ごとに実行結果を分けることもできる。
 例えば`development`で`local`の環境変数を使いたい場合、`.env.development.local`というファイルを作って、そこに環境変数を埋め込めばいい。同様に`production` ならば `.env.production`というファイルを作ればいい。
+また、Reactの中で`dotenv`で設定された値を`process.env`で使う場合、`REACT_APP_xxx`と言うように先頭に`REACT_APP_`をつけたものにしないと使用できない。
 
 【参考】
 
 * [Reactにおける環境変数を設定について、ようやく理解したので原因と共にまとめてみる_100DaysOfCodeチャレンジ38日目(Day_38:#100DaysOfCode)](https://qiita.com/yuta-ushijima/items/a653e9ca4847276f19cd)
+
+#### リンクを押したら画面を遷移したい(Router)
+Reactの特徴としてSPAがある。一つのページだけに完結するようなことはなく、アプリ内の他のページに遷移する必要がある。そのようなものを実装するにはどうしたらいいか解説してみる。
+
+#### とあるCompomentで取得した値を他のCompomentで使いたい(Redux + Flux)
+Reactの特徴の一つであるデータバインディングみたいなものを使いたい。
+今回の場合、GoogleでOAuth認証をして認証後に取得できるAccessTokenをサーバーにリクエストするときに一緒に送りたい。認証が完了したときに、Formの中にこのAccessTokenを埋め込むにはどうしたらいいか考えてみる。
+
+【参考】
+
+ * [React+Fluxで正しく設計するためのFlux見直しガイド](https://aloerina01.github.io/blog/2018-09-14-1)
+ * [Redux](https://redux.js.org/)
 
 #### localhostのAPIにrequestしたらエラーになった
 
