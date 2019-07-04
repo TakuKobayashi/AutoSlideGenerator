@@ -8,13 +8,15 @@ export default class GoogleLoginButton extends React.Component{
   }
 
   responseGoogle(response) {
+    this.props.googleAccount = response;
     console.log(response);
   }
 
   render(){
+    console.log(process.env);
     return (
       <GoogleLogin
-        clientId={process.env.GOOGLE_OAUTH_CLIENT_ID}
+        clientId={process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID}
         buttonText="Login"
         onSuccess={this.responseGoogle}
         onFailure={this.responseGoogle}
