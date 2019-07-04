@@ -13,7 +13,6 @@ export default class GoogleLoginButton extends React.Component{
   }
 
   render(){
-    console.log(process.env);
     return (
       <GoogleLogin
         clientId={process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID}

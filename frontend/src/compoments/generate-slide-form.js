@@ -7,6 +7,7 @@ import Push from 'push.js';
 export default class GenerateSlideForm extends React.Component{
   constructor(props) {
     super(props);
+    console.log(props);
 
     this.generateSlideSubmit = this.generateSlideSubmit.bind(this);
   }
@@ -35,8 +36,10 @@ export default class GenerateSlideForm extends React.Component{
   }
 
   render(){
+    const googleAccount = this.props.googleAccount;
     return (
       <form onSubmit={this.generateSlideSubmit} className="pure-form">
+        <div>{JSON.stringify(googleAccount)}</div>
         <input type="text" name="q" />
         <Collapse isOpened={true || false}>
           <div>Random content</div>
