@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import GoogleLogin from 'react-google-login';
 
-export default class GoogleLoginButton extends React.Component{
+export default class GoogleLoginButton extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -11,7 +11,7 @@ export default class GoogleLoginButton extends React.Component{
     console.log(response);
   }
 
-  render(){
+  render() {
     return (
       <GoogleLogin
         clientId={process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID}

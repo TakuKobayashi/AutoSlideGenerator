@@ -1,10 +1,10 @@
 import React from 'react';
 import purecss from 'purecss';
 import axios from 'axios';
-import {Collapse} from 'react-collapse';
+import { Collapse } from 'react-collapse';
 import Push from 'push.js';
 
-export default class GenerateSlideForm extends React.Component{
+export default class GenerateSlideForm extends React.Component {
   constructor(props) {
     super(props);
     console.log(props);
@@ -12,30 +12,30 @@ export default class GenerateSlideForm extends React.Component{
     this.generateSlideSubmit = this.generateSlideSubmit.bind(this);
   }
 
-  generateSlideSubmit(event){
-    if(Push.Permission.has()){
+  generateSlideSubmit(event) {
+    if (Push.Permission.has()) {
       Push.Permission.request(this.onGranted, this.onDenied);
-    }else{
+    } else {
       this.generateSlideRequest();
     }
     event.preventDefault();
   }
 
-  onGranted(){
+  onGranted() {
     this.generateSlideRequest();
   }
 
-  onDenied(){
+  onDenied() {
     this.generateSlideRequest();
   }
 
-  async generateSlideRequest(){
+  async generateSlideRequest() {
     console.log(process.env.REACT_APP_API_ROOT_URL);
-    const res = await axios.post(process.env.REACT_APP_API_ROOT_URL + "/slide/generate")
+    const res = await axios.post(process.env.REACT_APP_API_ROOT_URL + '/slide/generate');
     console.log(res);
   }
 
-  render(){
+  render() {
     const googleAccount = this.props.googleAccount;
     return (
       <form onSubmit={this.generateSlideSubmit} className="pure-form">
