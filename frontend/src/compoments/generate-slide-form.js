@@ -13,20 +13,17 @@ export default class GenerateSlideForm extends React.Component {
   }
 
   generateSlideSubmit(event) {
-    if (Push.Permission.has()) {
-      Push.Permission.request(this.onGranted, this.onDenied);
+    if (!Push.Permission.has()) {
+      const self = this;
+      Push.Permission.request(() => {
+        self.generateSlideRequest();
+      }, () => {
+        self.generateSlideRequest();
+      });
     } else {
       this.generateSlideRequest();
     }
     event.preventDefault();
-  }
-
-  onGranted() {
-    this.generateSlideRequest();
-  }
-
-  onDenied() {
-    this.generateSlideRequest();
   }
 
   async generateSlideRequest() {
