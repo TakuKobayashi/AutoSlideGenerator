@@ -138,13 +138,26 @@ Reactはデフォルトで`dotenv`をインストールしていて、buildす�
 Reactの特徴としてSPAがある。一つのページだけに完結するようなことはなく、アプリ内の他のページに遷移する必要がある。そのようなものを実装するにはどうしたらいいか解説してみる。
 
 #### とあるCompomentで取得した値を他のCompomentで使いたい(Redux + Flux)
+
 Reactの特徴の一つであるデータバインディングみたいなものを使いたい。
 今回の場合、GoogleでOAuth認証をして認証後に取得できるAccessTokenをサーバーにリクエストするときに一緒に送りたい。認証が完了したときに、Formの中にこのAccessTokenを埋め込むにはどうしたらいいか考えてみる。
+
+### Redux
+
+#### Reducer
+
+reducerとは「変化させるもの」、プログラミングで言うところの関数
+
+#### Container
+
+containerはReduxのStoreが管理する状態遷移をReactのプロパティとして流し込む役割を持つ
 
 【参考】
 
  * [React+Fluxで正しく設計するためのFlux見直しガイド](https://aloerina01.github.io/blog/2018-09-14-1)
  * [Redux](https://redux.js.org/)
+ * [React+Redux入門](https://qiita.com/erukiti/items/e16aa13ad81d5938374e)
+ * [Reduxが分からない人のためにReduxを概念から説明してみる](https://qiita.com/tkow/items/9da7062f9bfa99e848c3)
 
 #### localhostのAPIにrequestしたらエラーになった
 
