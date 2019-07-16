@@ -4,8 +4,10 @@ const initialState = {
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case 'INCREMENT':
+    case 'INCREMENT': {
+      return { fuga: state.fuga + 1 }
+    }
     default:
-      return state;
-  }
+      return state
+    }
 }

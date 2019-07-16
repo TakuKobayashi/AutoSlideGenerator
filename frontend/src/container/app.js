@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import App from '../component/app';
-import { increment } from '../action/app';
+import App from '../App';
+import actions from '../action/app';
 
 function mapStateToProps(state) {
   return state;
@@ -11,9 +11,9 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     handleClick: () => {
-      dispatch(increment());
+      dispatch(actions.increment());
     },
   };
 }
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

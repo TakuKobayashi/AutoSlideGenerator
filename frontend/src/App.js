@@ -28,6 +28,8 @@ class App extends React.Component {
           <GoogleLoginButton googleAccount={googleAccount} />
           <img src={logo} className="App-logo" alt="logo" />
           <GenerateSlideForm googleAccount={googleAccount} />
+          <span>{this.props.fuga}</span>
+          <button onClick={ () => this.props.handleClick() }>増加</button>
         </header>
       </div>
     );
