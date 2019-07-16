@@ -10,8 +10,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    handleClick: () => {
-      dispatch(actions.increment());
+    googleLogin: (response) => {
+      dispatch(actions.googleLogin(response));
     },
   };
 }

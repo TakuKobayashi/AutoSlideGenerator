@@ -11,13 +11,9 @@ import purecss from 'purecss';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.accounts = {
-      google: {},
-    };
   }
 
   render() {
-    const googleAccount = this.accounts.google;
     return (
       <div className="App">
         <header className="App-header">
@@ -25,11 +21,9 @@ class App extends React.Component {
             <source src={backgroundVideoWebm} type="video/webm" />
             <source src={backgroundVideoMP4} type="video/mp4" />
           </video>
-          <GoogleLoginButton googleAccount={googleAccount} />
+          <GoogleLoginButton />
           <img src={logo} className="App-logo" alt="logo" />
-          <GenerateSlideForm googleAccount={googleAccount} />
-          <span>{this.props.fuga}</span>
-          <button onClick={ () => this.props.handleClick() }>増加</button>
+          <GenerateSlideForm />
         </header>
       </div>
     );

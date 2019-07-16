@@ -5,10 +5,12 @@ import GoogleLogin from 'react-google-login';
 export default class GoogleLoginButton extends React.Component {
   constructor(props) {
     super(props);
+    console.log(this.props);
   }
 
   responseGoogle(response) {
     console.log(response);
+    this.props.googleLogin(response)
   }
 
   render() {

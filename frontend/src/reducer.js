@@ -1,11 +1,11 @@
 const initialState = {
-  fuga: 1,
+  googleAccount: {},
 };
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case 'INCREMENT': {
-      return { fuga: state.fuga + 1 }
+    case 'GoogleAccount': {
+      return { googleAccount: state.googleAccount }
     }
     default:
       return state

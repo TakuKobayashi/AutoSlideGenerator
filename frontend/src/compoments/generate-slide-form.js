@@ -7,7 +7,6 @@ import Push from 'push.js';
 export default class GenerateSlideForm extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props);
 
     this.generateSlideSubmit = this.generateSlideSubmit.bind(this);
   }

@@ -1,5 +1,5 @@
 export default {
-  increment: () => {
-    return { type: 'INCREMENT' };
+  googleLogin: () => {
+    return { type: 'GoogleAccount' };
   },
 };
