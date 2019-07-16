@@ -18,6 +18,7 @@ export default class GoogleLoginButton extends React.Component {
       <GoogleLogin
         clientId={process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID}
         buttonText="Login"
+        responseType="code"
         accessType="offline"
         onSuccess={this.responseGoogle}
         onFailure={this.responseGoogle}
