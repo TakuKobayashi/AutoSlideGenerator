@@ -159,6 +159,14 @@ containerはReduxのStoreが管理する状態遷移をReactのプロパティ�
  * [React+Redux入門](https://qiita.com/erukiti/items/e16aa13ad81d5938374e)
  * [Reduxが分からない人のためにReduxを概念から説明してみる](https://qiita.com/tkow/items/9da7062f9bfa99e848c3)
 
+# Reduxのstateの値をLocalStorageで永続化する
+
+[redux-persist](https://github.com/rt2zz/redux-persist)を使うことでReduxの値をLocalStorageに保存することができる。
+
+【参考】
+
+[Storeの永続化にredux-persistを使う](https://qiita.com/yasuhiro-yamada/items/bd86d7c9f35ebb1c1e7c)
+
 #### localhostのAPIにrequestしたらエラーになった
 
 expressで起動しているserverはlocalhostからrequestを受け取ると以下のようなエラーが出る。
