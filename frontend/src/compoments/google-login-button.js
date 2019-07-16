@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import GoogleLogin from 'react-google-login';
+import axios from 'axios';
 
 export default class GoogleLoginButton extends React.Component {
   constructor(props) {
@@ -10,6 +11,11 @@ export default class GoogleLoginButton extends React.Component {
 
   responseGoogle(response) {
     console.log(response);
+    axios.get("https://www.googleapis.com/oauth2/v3/tokeninfo", {params: {
+      id_token: response.code,
+    }}).then(decoded => {
+      console.log(decoded);
+    })
     this.props.googleLogin(response);
   }
 
