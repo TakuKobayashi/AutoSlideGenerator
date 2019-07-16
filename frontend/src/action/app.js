@@ -1,5 +1,5 @@
 export default {
   increment: () => {
-    return { type: 'INCREMENT' }
-  }
-}
+    return { type: 'INCREMENT' };
+  },
+};
