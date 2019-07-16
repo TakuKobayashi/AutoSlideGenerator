@@ -10,7 +10,7 @@ export default class GoogleLoginButton extends React.Component {
 
   responseGoogle(response) {
     console.log(response);
-    this.props.googleLogin(response)
+    this.props.googleLogin(response);
   }
 
   render() {
