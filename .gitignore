@@ -69,10 +69,6 @@ bower_components
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
 
-# Dependency directories
-node_modules/
-jspm_packages/
-
 # TypeScript v1 declaration files
 typings/
 
@@ -199,5 +195,13 @@ fabric.properties
 
 # Sonarlint plugin
 .idea/sonarlint
+
+jspm_packages
+
+# Serverless directories
+.serverless
+
+# Webpack directories
+.webpack
 
 # End of https://www.gitignore.io/api/node,webstorm

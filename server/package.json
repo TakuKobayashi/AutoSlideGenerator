@@ -1,11 +1,13 @@
 {
-  "name": "auto_slide_generator",
+  "name": "auto-slide-generator",
   "version": "0.0.1",
-  "main": "server.js",
+  "main": "handler.js",
   "scripts": {
     "build": "node lambdaBuild.js",
-    "format": "prettier --config .prettierrc --write '{lambda,libs}/**/*.{ts,js}'"
+    "format": "prettier --config .prettierrc --write '{lambda,libs}/**/*.{ts,js}'",
+    "serverless": "serverless"
   },
+  "description": "Serverless webpack example using Typescript",
   "author": "TakuKobayashi",
   "private": true,
   "license": "MIT",
@@ -17,18 +19,26 @@
     "googleapis": "^40.0.0",
     "ngeohash": "^0.6.3",
     "node-dynamodb-orm": "^0.0.5",
+    "serverless": "^1.48.2",
+    "source-map-support": "^0.5.12",
     "twitter-promise": "^1.2.0",
     "url": "^0.11.0",
     "uuid": "^3.3.2",
     "web-push": "^3.3.5"
   },
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.30",
+    "@types/node": "^12.6.8",
     "cors": "^2.8.5",
     "documentation": "^11.0.1",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
     "node-lambda": "^0.14.0",
     "nodemon": "^1.19.1",
-    "prettier": "^1.18.2"
+    "prettier": "^1.18.2",
+    "serverless-webpack": "^5.3.1",
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.5.3",
+    "webpack": "^4.36.1"
   }
 }
