@@ -285,6 +285,39 @@ const presentationResponse = await googleSlides.presentations.create({title: "sl
 
 この時、`objectId`にはslideとは別の一意になるようなObjectIdをいれる。`pageObjectId`で画像を差し込みたいSlideを指定している。ここでは画像はURLを指定したものでなければならない。
 
+### Serverless を使った AWS へのデプロイ
+
+Serverless のフレームワークを使ってAWS Lambda + APIGateway へデプロイして反映させています。
+
+### Serverlessのインストール
+
+
+### Serverlessでのデプロイ
+
+Serverlessを使ったdeployを成功させるためには各種AWS CLIで各種操作ができる状態の設定をしておく必要があります。
+
+#### AWS CLIのインストール
+
+まず、AWS CLIをインストールできていない場合はAWS CLIをインストールします。
+
+#### AWS IAMを使ってデプロイができるができるアカウントの設定
+
+一番手っ取り早いのは
+
+* Serverless用のIAMユーザを発行
+* IAMユーザに `AdministratorAccess` の管理ポリシーを与える
+
+このユーザーアカウントでAWS CLI上でログインしてデプロイするユーザーの情報を記録する。
+
+#### AWS CLIからログイン
+
+```
+aws configure
+```
+
+
+
+
 ## デザイン系で参考にしたもの
 
 * [配色アイデア手帖 めくって見つける新しいデザインの本［完全保存版］ [ 桜井 輝子 ]](https://hb.afl.rakuten.co.jp/hgc/18ab110a.e78ad517.18ab110b.3a837bfb/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fbook%2F15176294%2F&m=http%3A%2F%2Fm.rakuten.co.jp%2Fbook%2Fi%2F18822066%2F&link_type=text&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJ0ZXh0Iiwic2l6ZSI6IjI0MHgyNDAiLCJuYW0iOjEsIm5hbXAiOiJyaWdodCIsImNvbSI6MSwiY29tcCI6ImRvd24iLCJwcmljZSI6MSwiYm9yIjoxLCJjb2wiOjEsImJidG4iOjF9)
