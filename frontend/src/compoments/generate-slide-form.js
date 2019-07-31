@@ -8,6 +8,13 @@ export default class GenerateSlideForm extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      q: '',
+      searchWebsiteType: 'google',
+      exportType: 'googleSlide',
+      pushEnable: false,
+    };
+
     this.generateSlideSubmit = this.generateSlideSubmit.bind(this);
   }
 
@@ -29,8 +36,8 @@ export default class GenerateSlideForm extends React.Component {
   }
 
   async generateSlideRequest() {
-    console.log(process.env.REACT_APP_API_ROOT_URL);
-    const res = await axios.post(process.env.REACT_APP_API_ROOT_URL + '/slide/generate');
+    console.log(this.state)
+    const res = await axios.post('https://5pikwr8ymf.execute-api.ap-northeast-1.amazonaws.com/dev/hello');
     console.log(res);
   }
 
@@ -40,20 +47,20 @@ export default class GenerateSlideForm extends React.Component {
       <form onSubmit={this.generateSlideSubmit} className="pure-form">
         <div>{JSON.stringify(googleAccount)}</div>
         <div className="pure-u-1">
-          <input type="text" name="q" placeholder="スライドにしたい画像のキーワードを,(カンマ区切り)で入力していってください" />
+          <input type="text" name="q" placeholder="スライドにしたい画像のキーワードを,(カンマ区切り)で入力していってください" onChange={(e) => this.setState({q: e.target.value})} />
         </div>
         <h2>素材の収集元</h2>
         <Collapse isOpened={true || false}>
           <h2>素材の収集元</h2>
-          <p><input type="radio" name="rd" id="rd1" /><label htmlFor="rd1">Google画像検索</label></p>
-          <p><input type="radio" name="rd" id="rd2" /><label htmlFor="rd2">Twitter</label></p>
-          <p><input type="radio" name="rd" id="rd3" /><label htmlFor="rd2">Flickr</label></p>
-          <p><input type="radio" name="rd" id="rd4" /><label htmlFor="rd2">Instagram</label></p>
+          <p><input type="radio" name="rd" id="rd" onChange={(e) => this.setState({searchWebsiteType: 'google'})} /><label htmlFor="rd1">Google画像検索</label></p>
+          <p><input type="radio" name="rd" id="rd" onChange={(e) => this.setState({searchWebsiteType: 'twitter'})} /><label htmlFor="rd2">Twitter</label></p>
+          <p><input type="radio" name="rd" id="rd" onChange={(e) => this.setState({searchWebsiteType: 'flickr'})} /><label htmlFor="rd2">Flickr</label></p>
+          <p><input type="radio" name="rd" id="rd" onChange={(e) => this.setState({searchWebsiteType: 'instagram'})} /><label htmlFor="rd2">Instagram</label></p>
           <h2>プレゼンの出力先</h2>
-          <p><input type="radio" name="rd" id="rd11" /><label htmlFor="rd1">Google Slide</label></p>
-          <p><input type="radio" name="rd" id="rd12" /><label htmlFor="rd2">HTML</label></p>
+          <p><input type="radio" name="rd" id="rd11" onChange={(e) => this.setState({exportType: 'googleSlide'})} /><label htmlFor="rd1">Google Slide</label></p>
+          <p><input type="radio" name="rd" id="rd12" onChange={(e) => this.setState({exportType: 'html'})} /><label htmlFor="rd2">HTML</label></p>
           <h2>プッシュ通知</h2>
-          <p><input type="checkbox" name="cb" id="cb1" /><label htmlFor="cb1">出来上がったらプッシュ通知でお知らせする</label></p>
+          <p><input type="checkbox" name="cb" id="cb1" onChange={(e) => this.setState({pushEnable: e.target.checked})} /><label htmlFor="cb1">出来上がったらプッシュ通知でお知らせする</label></p>
         </Collapse>
         <input type="submit" value="作成する" className="pure-button pure-button-primary" />
       </form>
