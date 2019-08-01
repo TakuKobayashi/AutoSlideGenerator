@@ -6,7 +6,6 @@ import backgroundVideoJpg from './Background.jpg';
 import './App.css';
 import GenerateSlideForm from './compoments/generate-slide-form';
 import GoogleLoginButton from './compoments/google-login-button';
-import purecss from 'purecss';
 
 class App extends React.Component {
   constructor(props) {
