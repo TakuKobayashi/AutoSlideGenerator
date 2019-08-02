@@ -37,6 +37,16 @@
 yarn create react-app auto-slide-generator
 ```
 
+Typescriptで開発したいときは
+
+```sh
+yarn create react-app auto-slide-generator --typescript
+```
+
+【参考】
+
+* [React + TypeScriptプロジェクトをcreate-react-appに任せる](https://qiita.com/namaozi/items/7446804126a055caf254)
+
 * とりあえず、動かしてみてみる
 
 ```sh
@@ -52,6 +62,15 @@ npm run eject
 ```
 
 ### Tips
+
+#### Typescriptのプロジェクトでエラーになる
+
+Babelのpluginが足りないようでエラーが出ます。
+エラーへの対応としてpluginをインストールします。
+
+```
+yarn add @babel/plugin-transform-react-jsx-source @babel/plugin-transform-react-jsx-self
+```
 
 #### Buildした時に画面が真っ白になる件の対策
 
