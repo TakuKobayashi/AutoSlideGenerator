@@ -36,7 +36,8 @@ export default class GenerateSlideForm extends React.Component {
 
   async generateSlideRequest() {
     console.log(this.state)
-    const res = await axios.post('https://5pikwr8ymf.execute-api.ap-northeast-1.amazonaws.com/dev/hello');
+    const res = await axios.post('https://ufnk35q9zh.execute-api.ap-northeast-1.amazonaws.com/dev/hello', this.state);
+
     console.log(res);
   }
 
