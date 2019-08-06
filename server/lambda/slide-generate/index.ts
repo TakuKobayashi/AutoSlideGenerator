@@ -1,23 +1,28 @@
+import { APIGatewayProxyHandler } from 'aws-lambda';
+import 'source-map-support/register';
+
 const requireRoot = require('app-root-path').require;
 const googleImageSearch = requireRoot('/libs/googleImageSearch');
 const frickrSearch = requireRoot('/libs/frickrSearch');
 const twitterStatus = requireRoot('/libs/twitterStatus');
 const googleSlides = requireRoot('/libs/googleSlides');
 
-exports.handler = async (event, context) => {
+export const hello: APIGatewayProxyHandler = async (event, _context) => {
   console.log(event);
-  const googleAccessToken = event.googleAccessToken;
-  const searchWords = event.words.split(',');
-  const presentationProperty = JSON.parse(event.presentationProperty || '{}');
+  const requestOption = JSON.parse(event.body);
+
+  const googleAccessToken = requestOption.googleAccessToken;
+  const searchWords = requestOption.words.split(',');
+  const presentationProperty = requestOption.presentationProperty;
   const imageResources = [];
   for (const searchWord of searchWords) {
-    if (event.searchWebsiteType === 'frickr') {
+    if (requestOption.searchWebsiteType === 'frickr') {
       const searchPhotos = await frickrSearch.searchFlickrPhotos({
         text: searchWord,
       });
       const targetPhoto = searchPhotos.photo[Math.floor(Math.random() * searchPhotos.photo.length)];
       imageResources.push(searchPhotos.convertToPhotoToObject(targetPhoto));
-    } else if (event.searchWebsiteType === 'twitter') {
+    } else if (requestOption.searchWebsiteType === 'twitter') {
       const searchTweets = await twitterStatus.searchResourceTweets({
         q: searchWord,
       });
