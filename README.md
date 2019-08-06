@@ -244,7 +244,7 @@ const googleSlides = google.slides({ version: "v1", auth: oauth2Client });
 ```javascript
 const presentationResponse = await googleSlides.presentations.create({title: "slide_name"});
 ```
-上記のようなコードで新しいPresentationが作成される。APIへのリクエストは内部ではaxiosを使っているようなので、responseはaxiosのresponseと同じもの。また`create`の中が空Objectでも別に構わない。
+上記のようなコードで新しいPresentationが作成される。APIへのリクエストは内部では[axios](https://github.com/axios/axios)を使っているようなので、responseは[axios](https://github.com/axios/axios)のresponseと同じもの。また`create`の中が空Objectでも別に構わない。
 
 #### Presentationの中でSlide(Page)を作成
 いろんなものをよしなに作るものとして`batchUpdate`メソッドがある。Slideを作ったり何かを挿入したりする時は`batchUpdate`を呼ぶ時にいろんなものを付け加えて実行する。
@@ -334,7 +334,71 @@ Serverlessを使ったdeployを成功させるためには各種AWS CLIで各種
 aws configure
 ```
 
+#### Serverless deploy
 
+`AWS CLI`にてログインができていれば、`serverless`コマンドにてdeployを行うことができます。
+以下のコマンドを実行することでAWSへdeployします。
+
+```
+serverless deploy
+```
+
+#### Serverlessがデプロイする時に使われるAWSのサービス一覧
+
+* S3
+* CloudFormation
+* API Gateway
+* Lambda
+
+#### Serverless remove
+
+ServerlessでAWSへデプロイするときは上記のように複数のサービスを使用します。
+デプロイしたものを削除したいときは一つ一つ削除するのは大変なので、以下のようにServerlessコマンドを用いて一気に削除することができる。
+
+```
+serverless remove
+```
+
+### Serverlessでのcors対策
+
+#### cors
+
+HTTPのPOSTリクエストを行う場合、[CSRF](https://www.ipa.go.jp/security/vuln/vuln_contents/csrf.html)のセキュリティリスクへの対策が必要になります。
+
+ReactのようなSPAからHTTPのPOSTリクエストを行う場合は[CORS](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)を用いてリクエストの呼び出し元に通知する必要があります。
+API GatewayおよびLambdaでは[CORS](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)の設定がされていない場合、HTTPのPOSTリクエストを送った時に403エラーとなってしまいますので、対応が必要になります。
+
+#### serverlessにてcors対応
+
+`serverless.yml`にて以下のように`cors: true`の設定を入れます。この設定を入れることでAPI Gateway上での`cors`の設定が有効になります。
+
+```serverless.yml
+functions:
+  function-name:
+    events:
+      - http:
+          method: post
+          path: apiPath
+          cors: true
+```
+
+その後、ソースコードの部分(Lambda)にて、以下のように記述して、レスポンスヘッダーに返すように設定します。
+
+```
+  return {
+    ...
+    headers: {
+      "Access-Control-Allow-Origin" : "*",
+    },
+    ...
+  };
+```
+
+※ 上記の例では `*` と記述していますが、これは全てのRequestを受け付けるという意味となります。[CSRF](https://www.ipa.go.jp/security/vuln/vuln_contents/csrf.html)への対策とする場合、`https://[リクエストを受け付けるURL]`となるようにURLをしっかり設定することをお勧めします。
+
+【参考】
+* [SPA の CSRF 対策や CORS について検証する](https://numb86-tech.hatenablog.com/entry/2019/02/13/221458)
+* [Serverlessを使ってAPI GatewayとLambdaでCORSを有効にする](https://qiita.com/maaz118/items/e20b64f088fbead07206)
 
 
 ## デザイン系で参考にしたもの
