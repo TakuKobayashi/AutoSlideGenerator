@@ -3,18 +3,14 @@ const util = requireRoot('/libs/util');
 const cheerio = require('cheerio');
 const axios = require('axios');
 
-const INSTAGRAM_TAG_SEARCH_API_URL = 'https://www.instagram.com/explore/tags/';
-const INSTAGRAM_QUERY_API_URL = 'https://www.instagram.com/graphql/query/';
-const INSTAGRAM_TARGET_JS_FILENAME = 'Consumer.js';
-
 const GOOGLE_SEARCH_ROOT_URL = 'https://www.google.co.jp/search';
 const USER_AGENT =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36';
 const LIMIT_SEARCH_MILLISECOND = 240000;
 const MAX_REQUEST_SLEEP_MILLISECOND = 1000;
 
-const searchInstagramToObjects = async function searchInstagramToObjects(tag) {
-  const response = await axios.get(INSTAGRAM_TAG_SEARCH_API_URL + tag + '/');
+export async function searchGoogleToObjects(searchParams) {
+  const response = await searchGoogle(searchParams);
   const $ = cheerio.load(response.data);
   const results = [];
 
@@ -34,9 +30,7 @@ const searchInstagramToObjects = async function searchInstagramToObjects(tag) {
   return results;
 };
 
-exports.searchInstagramToObjects = searchInstagramToObjects;
-
-exports.searchAllInstagramImages = async function searchAllInstagramImages(searchObj) {
+export async function searchAllGoogleImages(searchObj) {
   let allSearchResults = [];
   let counter = 0;
   const startTime = new Date();
@@ -64,6 +58,15 @@ exports.searchAllInstagramImages = async function searchAllInstagramImages(searc
 
   return allSearchResults;
 };
+
+async function searchGoogle(searchParams) {
+  return axios.get(GOOGLE_SEARCH_ROOT_URL, {
+    params: searchParams,
+    headers: {
+      'user-agent': USER_AGENT,
+    },
+  });
+}
 
 function parseJSON(text) {
   let json = null;

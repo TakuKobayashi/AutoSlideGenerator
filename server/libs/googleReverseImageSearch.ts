@@ -6,7 +6,7 @@ const USER_AGENT =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36';
 const GOOGLE_REVERSE_SEARCH_ROOT_URL = 'https://www.google.co.jp/searchbyimage';
 
-const searchReverseImages = async function searchReverseImages(searchParams) {
+export async function searchReverseImages(searchParams) {
   // 初期化
   const reverseImageObject = {
     response_url: '',
@@ -59,8 +59,6 @@ const searchReverseImages = async function searchReverseImages(searchParams) {
     websites: websites,
   };
 };
-
-exports.searchReverseImages = searchReverseImages;
 
 function scrapeGoogleWebsites(html) {
   const $ = cheerio.load(html);

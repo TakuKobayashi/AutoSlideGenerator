@@ -1,7 +1,7 @@
 const cheerio = require('cheerio');
 const axios = require('axios');
 
-exports.scrapeResourceFromUrl = async function scrapeResourceFromUrl(url) {
+export async function scrapeResourceFromUrl(url) {
   const niconicoPageResponse = await axios.get(url);
   const niconicoPageHeaders = niconicoPageResponse.headers['set-cookie'] || [];
   const shouldAttachCookieHeaderValue = niconicoPageHeaders.find((cookie) => cookie.includes('nicohistory='));

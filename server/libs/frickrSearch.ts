@@ -10,7 +10,7 @@ const EXTRA_OPTIONS =
 const LIMIT_SEARCH_MILLISECOND = 240000;
 const MAX_REQUEST_SLEEP_MILLISECOND = 1000;
 
-const searchFlickrPhotos = async function searchFlickrPhotos(searchObj) {
+export async function searchFlickrPhotos(searchObj) {
   const searchQueries = Object.assign(
     {
       per_page: PER_PAGE_COUNT,
@@ -22,9 +22,7 @@ const searchFlickrPhotos = async function searchFlickrPhotos(searchObj) {
   return response.body.photos;
 };
 
-exports.searchFlickrPhotos = searchFlickrPhotos;
-
-const convertToPhotoToObject = function searchFlickrPhotos(flickrPhoto) {
+export function searchFlickrPhotos(flickrPhoto) {
   const rootWebsiteUrl = FLICKR_PHOTO_ROOT_URL + flickrPhoto.owner.toString() + '/' + flickrPhoto.id.toString() + '/';
   return {
     id: flickrPhoto.id,
@@ -50,9 +48,7 @@ const convertToPhotoToObject = function searchFlickrPhotos(flickrPhoto) {
   };
 };
 
-exports.convertToPhotoToObject = convertToPhotoToObject;
-
-exports.searchAllFlickrPhotos = async function searchAllFlickrPhotos(searchObj) {
+export async function searchAllFlickrPhotos(searchObj) {
   const allSearchResults = [];
   let pageNumber = 1;
   const startTime = new Date();

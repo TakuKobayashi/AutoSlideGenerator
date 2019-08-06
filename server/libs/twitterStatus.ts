@@ -8,7 +8,7 @@ const twitter = new Twitter({
   access_token_secret: process.env.TWITTER_BOT_ACCESS_TOKEN_SECRET,
 });
 
-const getTweets = async function getTweets(apiPath, searchParams) {
+export async function getTweets(apiPath, searchParams) {
   const keys = Object.keys(searchParams);
   for (const key of keys) {
     if (!searchParams[key]) {
@@ -22,16 +22,12 @@ const getTweets = async function getTweets(apiPath, searchParams) {
   return result;
 };
 
-exports.getTweets = getTweets;
-
-const searchTweets = async function searchTweets(searchParams) {
+export async function searchTweets(searchParams) {
   const searchQueries = Object.assign({ count: 100 }, searchParams);
   return getTweets('search/tweets', searchQueries);
 };
 
-exports.searchTweets = searchTweets;
-
-const searchAllTweets = async function searchAllTweets(searchParams) {
+export async function searchAllTweets(searchParams) {
   let allSearchResults = [];
   let maxId = null;
   while (true) {
@@ -52,26 +48,22 @@ const searchAllTweets = async function searchAllTweets(searchParams) {
   return allSearchResults;
 };
 
-exports.searchAllTweets = searchAllTweets;
-
-exports.searchResourceTweets = async function searchResourceTweets(searchParams) {
+export async function searchResourceTweets(searchParams) {
   const tweets = await searchTweets(searchParams);
   return filterResourceTweets(tweets.data.statuses);
 };
 
-exports.searchAllResourceTweets = async function searchAllResourceTweets(searchParams) {
+export async function searchAllResourceTweets(searchParams) {
   const tweets = await searchAllTweets(searchParams);
   return filterResourceTweets(tweets);
 };
 
-const getTimelineTweets = async function getTimelineTweets(searchParams) {
+export async function getTimelineTweets(searchParams) {
   const searchQueries = Object.assign({ count: 200 }, searchParams);
   return getTweets('statuses/user_timeline', searchQueries);
 };
 
-exports.getTimelineTweets = getTimelineTweets;
-
-const getAllTimelineTweets = async function getAllTimelineTweets(searchParams) {
+export async function getAllTimelineTweets(searchParams) {
   let allSearchResults = [];
   let maxId = null;
   while (true) {
@@ -93,14 +85,12 @@ const getAllTimelineTweets = async function getAllTimelineTweets(searchParams) {
   return allSearchResults;
 };
 
-exports.getAllTimelineTweets = getAllTimelineTweets;
-
-exports.getTimelineResourceTweets = async function getTimelineResourceTweets(searchParams) {
+export async function getTimelineResourceTweets(searchParams) {
   const tweets = await getTimelineTweets(searchParams);
   return filterResourceTweets(tweets.data);
 };
 
-exports.getAllTimelineResourceTweets = async function getAllTimelineResourceTweets(searchParams) {
+export async function getAllTimelineResourceTweets(searchParams) {
   const tweets = await getAllTimelineTweets(searchParams);
   return filterResourceTweets(tweets);
 };
@@ -120,7 +110,7 @@ function filterResourceTweets(tweets) {
   });
 }
 
-exports.convertStatusesToResourcesObject = function convertStatusesToResourcesObject(statuses) {
+export function convertStatusesToResourcesObject(statuses) {
   const twitterWebsites = [];
   const twitterImages = [];
   const twitterVideos = [];

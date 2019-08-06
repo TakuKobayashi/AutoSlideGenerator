@@ -1,4 +1,4 @@
-module.exports = function(message, startTime, results) {
+export function searchFlickrPhotos(message, startTime, results) {
   return {
     message: message,
     executed_millisecond: new Date() - startTime,

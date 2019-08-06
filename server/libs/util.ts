@@ -1,4 +1,4 @@
-exports.sleep = async function sleep(waitMilliseconds) {
+export async function sleep(waitMilliseconds) {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve();

@@ -3,7 +3,7 @@ const uuid = require('uuid/v4');
 
 const GOOGLE_SLIDE_API_VERSION = 'v1';
 
-exports.createPresentationAndSlides = async function createPresentationAndSlides(
+export async function createPresentationAndSlides(
   credentials,
   presentationProperty = {},
   resourceObjects = [],
