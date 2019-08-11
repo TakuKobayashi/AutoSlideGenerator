@@ -1,6 +1,16 @@
 import React from 'react';
 import axios from 'axios';
 import { Collapse } from 'react-collapse';
+import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
+import TextField from '@material-ui/core/TextField';
+import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Push from 'push.js';
 
 export default class GenerateSlideForm extends React.Component {
@@ -13,11 +23,21 @@ export default class GenerateSlideForm extends React.Component {
       exportType: 'googleSlide',
       pushEnable: false,
     };
+    this.loading = false
 
     this.generateSlideSubmit = this.generateSlideSubmit.bind(this);
+    this.onSelectChanged = this.onSelectChanged.bind(this);
+    this.onPushChecked = this.onPushChecked.bind(this);
   }
 
   generateSlideSubmit(event) {
+    console.log(this.loading)
+    this.loading = true;
+    setTimeout(() => {
+      console.log(this.loading)
+      this.loading = false
+    }, 1000);
+    /*
     if (!Push.Permission.has()) {
       const self = this;
       Push.Permission.request(
@@ -31,39 +51,64 @@ export default class GenerateSlideForm extends React.Component {
     } else {
       this.generateSlideRequest();
     }
+    */
     event.preventDefault();
   }
 
+  onSelectChanged(event) {
+    console.log(event);
+    this.setState({ [event.target.name]: event.target.value });
+  }
+
   async generateSlideRequest() {
-    console.log(this.state)
+    console.log(this.state);
     const res = await axios.post('https://ufnk35q9zh.execute-api.ap-northeast-1.amazonaws.com/dev/hello', this.state);
 
     console.log(res);
   }
 
+  onPushChecked(event, checked) {
+    console.log(event);
+    console.log(checked);
+    this.setState({ pushEnable: event.target.checked });
+  }
+
   render() {
     const googleAccount = this.props.googleAccount;
     return (
-      <form onSubmit={this.generateSlideSubmit} className="pure-form">
-        <div>{JSON.stringify(googleAccount)}</div>
-        <div className="pure-u-1">
-          <input type="text" name="q" placeholder="スライドにしたい画像のキーワードを,(カンマ区切り)で入力していってください" onChange={(e) => this.setState({q: e.target.value})} />
-        </div>
-        <h2>素材の収集元</h2>
+      <FormControl>
+        <TextField
+          label="slide titles"
+          placeholder="スライドにしたい画像のキーワードを,(カンマ区切り)で入力していってください"
+          fullWidth={true}
+          onChange={(e) => this.setState({ q: e.target.value })}
+        />
         <Collapse isOpened={true || false}>
-          <h2>素材の収集元</h2>
-          <p><input type="radio" name="rd" id="rd" onChange={(e) => this.setState({searchWebsiteType: 'google'})} /><label htmlFor="rd1">Google画像検索</label></p>
-          <p><input type="radio" name="rd" id="rd" onChange={(e) => this.setState({searchWebsiteType: 'twitter'})} /><label htmlFor="rd2">Twitter</label></p>
-          <p><input type="radio" name="rd" id="rd" onChange={(e) => this.setState({searchWebsiteType: 'flickr'})} /><label htmlFor="rd2">Flickr</label></p>
-          <p><input type="radio" name="rd" id="rd" onChange={(e) => this.setState({searchWebsiteType: 'instagram'})} /><label htmlFor="rd2">Instagram</label></p>
-          <h2>プレゼンの出力先</h2>
-          <p><input type="radio" name="rd" id="rd11" onChange={(e) => this.setState({exportType: 'googleSlide'})} /><label htmlFor="rd1">Google Slide</label></p>
-          <p><input type="radio" name="rd" id="rd12" onChange={(e) => this.setState({exportType: 'html'})} /><label htmlFor="rd2">HTML</label></p>
-          <h2>プッシュ通知</h2>
-          <p><input type="checkbox" name="cb" id="cb1" onChange={(e) => this.setState({pushEnable: e.target.checked})} /><label htmlFor="cb1">出来上がったらプッシュ通知でお知らせする</label></p>
+          <InputLabel htmlFor="age-simple">Age</InputLabel>
+          <Select onChange={this.onSelectChanged} autoWidth={true} name="searchWebsiteType" value={this.state.searchWebsiteType}>
+            <MenuItem value="google">Google画像検索</MenuItem>
+            <MenuItem value="twitter">Twitter</MenuItem>
+            <MenuItem value="flickr">Flickr</MenuItem>
+            <MenuItem value="instagram">Instagram</MenuItem>
+          </Select>
+          <FormHelperText>Label + placeholder</FormHelperText>
+          <Select onChange={this.onSelectChanged} name="exportType" value={this.state.exportType}>
+            <MenuItem value="googleSlide">Google Slide</MenuItem>
+            <MenuItem value="html">HTML</MenuItem>
+          </Select>
+          <FormControlLabel
+            control={<Checkbox checked={this.state.pushEnable} onChange={this.onPushChecked} />}
+            label="出来上がったらプッシュ通知でお知らせする"
+          />
         </Collapse>
-        <input type="submit" value="作成する" className="pure-button pure-button-primary" />
-      </form>
+        {(() => {
+          if (this.loading) {
+            return <CircularProgress />
+          } else {
+            return <Button variant="contained" size="large" fullWidth={true} color="primary" onClick={this.generateSlideSubmit}>作成する</Button>
+          }
+        })()}
+      </FormControl>
     );
   }
 }
