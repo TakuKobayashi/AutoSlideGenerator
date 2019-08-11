@@ -14,7 +14,7 @@ export async function createPresentationAndSlides(
   const newPresentationResponse = await googleSlides.presentations.create(presentationProperty);
   // newPresentationResponse.data.pageSize でPresentationの幅、高さの情報が取れる
   const slideImageObjects = createImageSlideObjects(resourceObjects);
-  const slides = await googleSlides.presentations.batchUpdate({
+  await googleSlides.presentations.batchUpdate({
     presentationId: newPresentationResponse.data.presentationId,
     resource: {
       requests: slideImageObjects,

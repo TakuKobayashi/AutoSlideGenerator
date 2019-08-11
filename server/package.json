@@ -15,6 +15,7 @@
     "app-root-path": "^2.2.1",
     "axios": "^0.19.0",
     "cheerio": "^1.0.0-rc.3",
+    "flickr-sdk": "^3.9.0",
     "geolib": "^3.0.3",
     "googleapis": "^40.0.0",
     "ngeohash": "^0.6.3",

@@ -7,7 +7,7 @@ const frickrSearch = requireRoot('/libs/frickrSearch');
 const twitterStatus = requireRoot('/libs/twitterStatus');
 const googleSlides = requireRoot('/libs/googleSlides');
 
-export const hello: APIGatewayProxyHandler = async (event, _context) => {
+export const handler: APIGatewayProxyHandler = async (event, _context) => {
   console.log(event);
   const requestOption = JSON.parse(event.body);
 

@@ -15,7 +15,7 @@ export async function searchGoogleToObjects(searchParams) {
   const results = [];
 
   for (const element of Object.values($('.rg_meta'))) {
-    const meta = parseJSON($(element).text());
+    const meta = util.tryParseJSON($(element).text());
     if (!meta) continue;
     results.push({
       id: meta.id,
@@ -33,8 +33,8 @@ export async function searchGoogleToObjects(searchParams) {
 export async function searchAllGoogleImages(searchObj) {
   let allSearchResults = [];
   let counter = 0;
-  const startTime = new Date();
-  while (new Date() - startTime < LIMIT_SEARCH_MILLISECOND) {
+  const startTime = new Date().getTime();
+  while (new Date().getTime() - startTime < LIMIT_SEARCH_MILLISECOND) {
     const searchQueries = Object.assign(
       {
         tbm: 'isch',
@@ -43,14 +43,14 @@ export async function searchAllGoogleImages(searchObj) {
       },
       searchObj,
     );
-    const requestStartTime = new Date();
+    const requestStartTime = new Date().getTime();
     const searchResults = await searchGoogleToObjects(searchQueries);
     if (searchResults.length <= 0) {
       break;
     }
     counter = counter + searchResults.length;
     allSearchResults = allSearchResults.concat(searchResults);
-    const elapsedMilliSecond = new Date() - requestStartTime;
+    const elapsedMilliSecond = new Date().getTime() - requestStartTime;
     if (elapsedMilliSecond < MAX_REQUEST_SLEEP_MILLISECOND) {
       await util.sleep(elapsedMilliSecond);
     }
@@ -66,14 +66,4 @@ async function searchGoogle(searchParams) {
       'user-agent': USER_AGENT,
     },
   });
-}
-
-function parseJSON(text) {
-  let json = null;
-  try {
-    json = JSON.parse(text);
-  } catch (error) {
-    //console.log(error);
-  }
-  return json;
 }

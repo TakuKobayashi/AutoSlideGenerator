@@ -22,7 +22,7 @@ export async function searchFlickrPhotos(searchObj) {
   return response.body.photos;
 };
 
-export function searchFlickrPhotos(flickrPhoto) {
+export function convertToPhotoToObject(flickrPhoto) {
   const rootWebsiteUrl = FLICKR_PHOTO_ROOT_URL + flickrPhoto.owner.toString() + '/' + flickrPhoto.id.toString() + '/';
   return {
     id: flickrPhoto.id,
@@ -51,17 +51,19 @@ export function searchFlickrPhotos(flickrPhoto) {
 export async function searchAllFlickrPhotos(searchObj) {
   const allSearchResults = [];
   let pageNumber = 1;
-  const startTime = new Date();
+  const startTime = new Date().getTime();
   let retryCounter = 0;
-  while (new Date() - startTime < LIMIT_SEARCH_MILLISECOND) {
+  while (new Date().getTime() - startTime < LIMIT_SEARCH_MILLISECOND) {
     const searchQueries = Object.assign(
       {
         page: pageNumber,
       },
       searchObj,
     );
-    const requestStartTime = new Date();
-    const searchResult = await searchFlickrPhotos(searchQueries).catch((error) => (retryCounter = retryCounter + 1));
+    const requestStartTime = new Date().getTime();
+    const searchResult = await searchFlickrPhotos(searchQueries).catch(() => {
+      retryCounter = retryCounter + 1;
+    });
     if (!searchResult && retryCounter > 0) {
       if (retryCounter >= 5) {
         break;
@@ -78,7 +80,7 @@ export async function searchAllFlickrPhotos(searchObj) {
     for (const photo of searchResult.photo) {
       allSearchResults.push(convertToPhotoToObject(photo));
     }
-    const elapsedMilliSecond = new Date() - requestStartTime;
+    const elapsedMilliSecond = new Date().getTime() - requestStartTime;
     if (elapsedMilliSecond < MAX_REQUEST_SLEEP_MILLISECOND) {
       await util.sleep(elapsedMilliSecond);
     }
