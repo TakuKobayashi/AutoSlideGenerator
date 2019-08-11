@@ -48,7 +48,7 @@ export async function searchAllInstagramImages(searchObj) {
       searchObj,
     );
     const requestStartTime = new Date().getTime();
-    const searchResults = await searchGoogleToObjects(searchQueries);
+    const searchResults = await searchInstagramToObjects(searchQueries);
     if (searchResults.length <= 0) {
       break;
     }

@@ -1,4 +1,4 @@
-import { ApiRenderTemplate } from './interfaces/apiRenderTemplate'
+import { ApiRenderTemplate } from './interfaces/apiResponseTemplate'
 
 export function apiRenderTemplate(message: string, startTime: number, results) {
   return {
