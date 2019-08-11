@@ -13,26 +13,33 @@ export const handler: APIGatewayProxyHandler = async (event, _context) => {
 
   const googleAccessToken = requestOption.googleAccessToken;
   const searchWords = requestOption.words.split(',');
-  const presentationProperty = requestOption.presentationProperty;
+  const presentationProperty = requestOption.presentationProperty || {};
   const imageResources = [];
   for (const searchWord of searchWords) {
     if (requestOption.searchWebsiteType === 'frickr') {
       const searchPhotos = await frickrSearch.searchFlickrPhotos({
         text: searchWord,
       });
-      const targetPhoto = searchPhotos.photo[Math.floor(Math.random() * searchPhotos.photo.length)];
-      imageResources.push(searchPhotos.convertToPhotoToObject(targetPhoto));
+      if(searchPhotos.length > 0){
+        const targetPhoto = searchPhotos.photo[Math.floor(Math.random() * searchPhotos.photo.length)];
+        imageResources.push(frickrSearch.convertToPhotoToObject(targetPhoto));
+      }
     } else if (requestOption.searchWebsiteType === 'twitter') {
       const searchTweets = await twitterStatus.searchResourceTweets({
         q: searchWord,
       });
       const searchResults = twitterStatus.convertStatusesToResourcesObject(searchTweets);
-      imageResources.push(searchResults.images[Math.floor(Math.random() * searchResults.images.length)]);
+      if(searchResults.length > 0){
+        imageResources.push(searchResults.images[Math.floor(Math.random() * searchResults.images.length)]);
+      }
     } else {
       const searchResults = await googleImageSearch.searchGoogleToObjects({
         q: searchWord,
+        tbm: 'isch',
       });
-      imageResources.push(searchResults[Math.floor(Math.random() * searchResults.length)]);
+      if(searchResults.length > 0){
+        imageResources.push(searchResults[Math.floor(Math.random() * searchResults.length)]);
+      }
     }
   }
   const presentation = await googleSlides.createPresentationAndSlides(
