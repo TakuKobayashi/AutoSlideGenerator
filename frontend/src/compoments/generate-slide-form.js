@@ -22,8 +22,8 @@ export default class GenerateSlideForm extends React.Component {
       searchWebsiteType: 'google',
       exportType: 'googleSlide',
       pushEnable: false,
+      loading: false,
     };
-    this.loading = false
 
     this.generateSlideSubmit = this.generateSlideSubmit.bind(this);
     this.onSelectChanged = this.onSelectChanged.bind(this);
@@ -31,13 +31,7 @@ export default class GenerateSlideForm extends React.Component {
   }
 
   generateSlideSubmit(event) {
-    console.log(this.loading)
-    this.loading = true;
-    setTimeout(() => {
-      console.log(this.loading)
-      this.loading = false
-    }, 1000);
-    /*
+    this.setState({ loading: true });
     if (!Push.Permission.has()) {
       const self = this;
       Push.Permission.request(
@@ -51,7 +45,6 @@ export default class GenerateSlideForm extends React.Component {
     } else {
       this.generateSlideRequest();
     }
-    */
     event.preventDefault();
   }
 
@@ -63,14 +56,14 @@ export default class GenerateSlideForm extends React.Component {
   async generateSlideRequest() {
     console.log(this.state);
     const res = await axios.post('https://ufnk35q9zh.execute-api.ap-northeast-1.amazonaws.com/dev/hello', this.state);
-
+    this.setState({ loading: false });
     console.log(res);
   }
 
   onPushChecked(event, checked) {
     console.log(event);
     console.log(checked);
-    this.setState({ pushEnable: event.target.checked });
+    this.setState({ pushEnable: checked });
   }
 
   render() {
@@ -101,13 +94,9 @@ export default class GenerateSlideForm extends React.Component {
             label="出来上がったらプッシュ通知でお知らせする"
           />
         </Collapse>
-        {(() => {
-          if (this.loading) {
-            return <CircularProgress />
-          } else {
-            return <Button variant="contained" size="large" fullWidth={true} color="primary" onClick={this.generateSlideSubmit}>作成する</Button>
-          }
-        })()}
+        <Button variant="contained" size="large" fullWidth={true} color="primary" onClick={this.generateSlideSubmit} disabled={this.state.loading}>
+          {this.state.loading ? <CircularProgress /> : '作成する'}
+        </Button>
       </FormControl>
     );
   }
