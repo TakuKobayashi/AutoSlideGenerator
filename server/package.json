@@ -44,6 +44,7 @@
     "node-lambda": "^0.14.0",
     "nodemon": "^1.19.1",
     "prettier": "^1.18.2",
+    "serverless-dotenv-plugin": "^2.1.1",
     "serverless-webpack": "^5.3.1",
     "ts-loader": "^6.0.4",
     "typescript": "^3.5.3",
