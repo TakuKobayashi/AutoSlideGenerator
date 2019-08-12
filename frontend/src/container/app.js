@@ -11,6 +11,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     googleLogin: (response) => {
+      console.log("record");
+      console.log(response);
       dispatch(actions.googleLogin(response));
     },
   };
