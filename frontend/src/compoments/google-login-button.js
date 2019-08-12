@@ -11,6 +11,7 @@ export default class GoogleLoginButton extends React.Component {
 
   responseGoogle(response) {
     console.log(response);
+    /*
     axios.post("https://www.googleapis.com/oauth2/v4/token", {
       code: response.code,
       grant_type: "authorization_code",
@@ -20,6 +21,7 @@ export default class GoogleLoginButton extends React.Component {
     }).then(decoded => {
       console.log(decoded);
     })
+    */
     this.props.googleLogin(response);
   }
 
@@ -28,8 +30,8 @@ export default class GoogleLoginButton extends React.Component {
       <GoogleLogin
         clientId={process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID}
         buttonText="Login"
-        responseType="code"
-        accessType="offline"
+        responseType="id_token code"
+        accessType="online"
         onSuccess={this.responseGoogle}
         onFailure={this.responseGoogle}
         cookiePolicy={'single_host_origin'}

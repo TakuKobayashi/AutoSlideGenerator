@@ -17,6 +17,8 @@ export default class GenerateSlideForm extends React.Component {
   constructor(props) {
     super(props);
 
+    console.log(this.props)
+
     this.state = {
       q: '',
       searchWebsiteType: 'google',
