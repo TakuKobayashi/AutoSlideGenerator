@@ -1,11 +1,15 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
 import 'source-map-support/register';
 
-const requireRoot = require('app-root-path').require;
-const googleImageSearch = requireRoot('/libs/googleImageSearch');
-const frickrSearch = requireRoot('/libs/frickrSearch');
-const twitterStatus = requireRoot('/libs/twitterStatus');
-const googleSlides = requireRoot('/libs/googleSlides');
+//const requireRoot = require('app-root-path').require;
+//const googleImageSearch = requireRoot('/libs/googleImageSearch');
+//const frickrSearch = requireRoot('/libs/frickrSearch');
+//const twitterStatus = requireRoot('/libs/twitterStatus');
+//const googleSlides = requireRoot('/libs/googleSlides');
+const googleImageSearch = require('../../libs/googleImageSearch');
+const frickrSearch = require('../../libs/frickrSearch');
+const twitterStatus = require('../../libs/twitterStatus');
+const googleSlides = require('../../libs/googleSlides');
 
 export const handler: APIGatewayProxyHandler = async (event, _context) => {
   console.log(event);
