@@ -1,5 +1,6 @@
-const requireRoot = require('app-root-path').require;
-const util = requireRoot('/libs/util');
+//const requireRoot = require('app-root-path').require;
+//const util = requireRoot('/libs/util');
+const util = require('./util');
 
 const Flickr = require('flickr-sdk');
 
