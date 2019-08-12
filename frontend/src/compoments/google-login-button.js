@@ -11,7 +11,7 @@ export default class GoogleLoginButton extends React.Component {
 
   responseGoogle(response) {
     console.log(response);
-    axios.post("https://www.googleapis.com/oauth2/v4/token", {params: {
+    axios.post("https://www.googleapis.com/oauth2/v4/token", {data: {
       code: response.code,
       grant_type: "authorization_code",
       client_id: process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID,
