@@ -7,6 +7,8 @@ export default class GoogleLoginButton extends React.Component {
   constructor(props) {
     super(props);
     console.log(this.props);
+
+    this.responseGoogle = this.responseGoogle.bind(this);
   }
 
   responseGoogle(response) {
