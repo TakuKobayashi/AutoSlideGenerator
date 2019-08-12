@@ -24,7 +24,7 @@ export const handler: APIGatewayProxyHandler = async (event, _context) => {
       const searchPhotos = await frickrSearch.searchFlickrPhotos({
         text: searchWord,
       });
-      if(searchPhotos.length > 0){
+      if(searchPhotos.photo.length > 0){
         const targetPhoto = searchPhotos.photo[Math.floor(Math.random() * searchPhotos.photo.length)];
         imageResources.push(frickrSearch.convertToPhotoToObject(targetPhoto));
       }
@@ -33,7 +33,7 @@ export const handler: APIGatewayProxyHandler = async (event, _context) => {
         q: searchWord,
       });
       const searchResults = twitterStatus.convertStatusesToResourcesObject(searchTweets);
-      if(searchResults.length > 0){
+      if(searchResults.images.length > 0){
         imageResources.push(searchResults.images[Math.floor(Math.random() * searchResults.images.length)]);
       }
     } else {
