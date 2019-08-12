@@ -16,7 +16,7 @@ provider:
 functions:
   auto-slide-generator-slide-generate:
     handler: lambda/slide-generate/index.handler
-    memorySize: 128
+    memorySize: 256
     timeout: 900
     events:
       - http:
