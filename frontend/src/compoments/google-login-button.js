@@ -11,13 +11,13 @@ export default class GoogleLoginButton extends React.Component {
 
   responseGoogle(response) {
     console.log(response);
-    axios.post("https://www.googleapis.com/oauth2/v4/token", {data: {
+    axios.post("https://www.googleapis.com/oauth2/v4/token", {
       code: response.code,
       grant_type: "authorization_code",
       client_id: process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID,
       client_secret:  process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_SECRET,
       redirect_uri: "https://takukobayashi.github.io/AutoSlideGenerator/",
-    }}).then(decoded => {
+    }).then(decoded => {
       console.log(decoded);
     })
     this.props.googleLogin(response);
