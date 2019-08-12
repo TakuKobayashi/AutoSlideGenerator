@@ -16,6 +16,7 @@ export default class GoogleLoginButton extends React.Component {
       grant_type: "authorization_code",
       client_id: process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID,
       client_secret:  process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_SECRET,
+      redirect_uri: "https://takukobayashi.github.io/AutoSlideGenerator/",
     }}).then(decoded => {
       console.log(decoded);
     })
