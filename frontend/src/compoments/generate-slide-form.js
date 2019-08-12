@@ -18,12 +18,15 @@ export default class GenerateSlideForm extends React.Component {
     super(props);
 
     this.state = {
-      q: '',
+      words: [],
       searchWebsiteType: 'google',
       exportType: 'googleSlide',
       pushEnable: false,
       loading: false,
+      slideTitle: '',
+      googleAccount: this.props.googleAccount || {},
     };
+    console.log(this.state);
 
     this.generateSlideSubmit = this.generateSlideSubmit.bind(this);
     this.onSelectChanged = this.onSelectChanged.bind(this);
@@ -55,7 +58,24 @@ export default class GenerateSlideForm extends React.Component {
 
   async generateSlideRequest() {
     console.log(this.state);
-    const res = await axios.post('https://ufnk35q9zh.execute-api.ap-northeast-1.amazonaws.com/dev/hello', this.state);
+    const slideWords = this.state.words.join(",").split(",")
+    if(slideWords.length <= 0){
+      return;
+    }
+    let slideTitle = this.state.slideTitle;
+    if(!slideTitle){
+      slideTitle = slideWords[0];
+    }
+    const res = await axios.post(process.env.REACT_APP_API_ROOT_URL + "/slide/generate", {
+      words: slideWords.join(","),
+      searchWebsiteType: this.state.searchWebsiteType,
+      exportType: this.state.exportType,
+      pushEnable: this.state.pushEnable,
+      googleAccessToken: this.state.googleAccount.accessToken,
+      presentationProperty: {
+        title: slideTitle,
+      }
+    });
     this.setState({ loading: false });
     console.log(res);
   }
@@ -67,14 +87,13 @@ export default class GenerateSlideForm extends React.Component {
   }
 
   render() {
-    const googleAccount = this.props.googleAccount;
     return (
       <FormControl>
         <TextField
-          label="slide titles"
+          label="image search words"
           placeholder="スライドにしたい画像のキーワードを,(カンマ区切り)で入力していってください"
           fullWidth={true}
-          onChange={(e) => this.setState({ q: e.target.value })}
+          onChange={(e) => this.setState({ words: [e.target.value] })}
         />
         <Collapse isOpened={true || false}>
           <InputLabel htmlFor="age-simple">Age</InputLabel>
@@ -85,6 +104,12 @@ export default class GenerateSlideForm extends React.Component {
             <MenuItem value="instagram">Instagram</MenuItem>
           </Select>
           <FormHelperText>Label + placeholder</FormHelperText>
+          <TextField
+            label="slide title"
+            placeholder="スライド名を決めたい場合は入力してください"
+            fullWidth={true}
+            onChange={(e) => this.setState({ slideTitle: e.target.value })}
+          />
           <Select onChange={this.onSelectChanged} name="exportType" value={this.state.exportType}>
             <MenuItem value="googleSlide">Google Slide</MenuItem>
             <MenuItem value="html">HTML</MenuItem>

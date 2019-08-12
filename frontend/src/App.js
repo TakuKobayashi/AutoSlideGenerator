@@ -10,6 +10,8 @@ import GoogleLoginButton from './compoments/google-login-button';
 class App extends React.Component {
   constructor(props) {
     super(props);
+
+    console.log(this.props)
   }
 
   render() {
@@ -20,9 +22,9 @@ class App extends React.Component {
             <source src={backgroundVideoWebm} type="video/webm" />
             <source src={backgroundVideoMP4} type="video/mp4" />
           </video>
-          <GoogleLoginButton />
+          <GoogleLoginButton {...this.props} />
           <img src={logo} className="App-logo" alt="logo" />
-          <GenerateSlideForm />
+          <GenerateSlideForm {...this.props} />
         </header>
       </div>
     );
