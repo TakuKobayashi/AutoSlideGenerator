@@ -7,7 +7,7 @@ export async function sleep(waitMilliseconds: number): Promise<void> {
 };
 
 
-export function tryParseJSON(text: string, isRecordErrorLog: boolean = false) {
+export function tryParseJSON(text: string, isRecordErrorLog: boolean = false): any {
   let json = null;
   try {
     json = JSON.parse(text);

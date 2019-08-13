@@ -1,3 +1,4 @@
+import { ImageResource, TwitterImageResource, VideoResource, WebsiteResource } from './interfaces/resourceResult';
 const TWITTER_ROOT_URL = 'https://twitter.com/';
 
 const Twitter = require('twitter-promise');
@@ -8,7 +9,7 @@ const twitter = new Twitter({
   access_token_secret: process.env.TWITTER_BOT_ACCESS_TOKEN_SECRET,
 });
 
-export async function getTweets(apiPath, searchParams) {
+export async function getTweets(apiPath: string, searchParams) {
   const keys = Object.keys(searchParams);
   for (const key of keys) {
     if (!searchParams[key]) {
@@ -111,9 +112,9 @@ function filterResourceTweets(tweets) {
 }
 
 export function convertStatusesToResourcesObject(statuses) {
-  const twitterWebsites = [];
-  const twitterImages = [];
-  const twitterVideos = [];
+  const twitterWebsites: WebsiteResource[] = [];
+  const twitterImages: TwitterImageResource[] = [];
+  const twitterVideos: VideoResource[] = [];
   for (const status of statuses) {
     for (const website_url of status.entities.urls) {
       twitterWebsites.push({
@@ -125,7 +126,7 @@ export function convertStatusesToResourcesObject(statuses) {
       });
     }
     if (status.extended_entities) {
-      const twitterWebsiteUrl = TWITTER_ROOT_URL + status.user.screen_name + '/status/' + status.id;
+      const twitterWebsiteUrl = [TWITTER_ROOT_URL, status.user.screen_name, '/status/' + status.id].join();
       for (const twitterMedia of status.extended_entities.media) {
         if (twitterMedia.video_info) {
           twitterVideos.push({
