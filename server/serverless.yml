@@ -9,7 +9,19 @@ plugins:
   - serverless-dotenv-plugin
   - serverless-dynamodb-local
   - serverless-offline
-  - serverless-plugin-typescript
+
+custom:
+  webpack:
+    webpackConfig: 'webpack.config.js'   # Name of webpack configuration file
+    includeModules: false   # Node modules configuration for packaging
+    packager: 'yarn'   # Packager that will be used to package your external modules
+    excludeFiles: lambda/**/*.spec.ts # Provide a glob for files to ignore
+
+# コレが大事
+#
+# ref.: https://serverless.com/framework/docs/providers/aws/guide/packaging/#packaging-functions-separately
+package:
+  individually: true
 
 provider:
   name: aws
