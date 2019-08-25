@@ -12,7 +12,6 @@ export default class GoogleLoginButton extends React.Component {
   }
 
   responseGoogle(response) {
-    console.log(response);
     /*
     axios.post("https://www.googleapis.com/oauth2/v4/token", {
       code: response.code,
@@ -24,7 +23,13 @@ export default class GoogleLoginButton extends React.Component {
       console.log(decoded);
     })
     */
-    this.props.googleLogin(response);
+    this.props.googleLogin({
+      profileObj: response.profileObj,
+      tokenObj: response.tokenObj,
+      accessToken: response.accessToken,
+      googleId: response.response,
+      tokenId: response.tokenId
+    });
   }
 
   render() {
