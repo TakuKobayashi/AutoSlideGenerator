@@ -6,14 +6,15 @@ import 'source-map-support/register';
 //const frickrSearch = requireRoot('/libs/frickrSearch');
 //const twitterStatus = requireRoot('/libs/twitterStatus');
 //const googleSlides = requireRoot('/libs/googleSlides');
-const googleImageSearch = require('../../libs/googleImageSearch');
-const frickrSearch = require('../../libs/frickrSearch');
-const twitterStatus = require('../../libs/twitterStatus');
-const googleSlides = require('../../libs/googleSlides');
+import { searchGoogleToObjects } from '../../libs/googleImageSearch';
+import { searchFlickrPhotos, convertToPhotoToObject } from '../../libs/frickrSearch';
+import { searchResourceTweets, convertStatusesToResourcesObject } from '../../libs/twitterStatus';
+import { createPresentationAndSlides } from '../../libs/googleSlides';
 
 export const handler: APIGatewayProxyHandler = async (event, _context) => {
   console.log(event);
   const requestOption = JSON.parse(event.body);
+  console.log(requestOption);
 
   const googleAccessToken = requestOption.googleAccessToken;
   const searchWords = requestOption.words.split(',');
@@ -21,31 +22,32 @@ export const handler: APIGatewayProxyHandler = async (event, _context) => {
   const imageResources = [];
   for (const searchWord of searchWords) {
     if (requestOption.searchWebsiteType === 'frickr') {
-      const searchPhotos = await frickrSearch.searchFlickrPhotos({
+      const searchPhotos = await searchFlickrPhotos({
         text: searchWord,
       });
-      if(searchPhotos.photo.length > 0){
+      if (searchPhotos.photo.length > 0) {
         const targetPhoto = searchPhotos.photo[Math.floor(Math.random() * searchPhotos.photo.length)];
-        imageResources.push(frickrSearch.convertToPhotoToObject(targetPhoto));
+        imageResources.push(convertToPhotoToObject(targetPhoto));
       }
     } else if (requestOption.searchWebsiteType === 'twitter') {
-      const searchTweets = await twitterStatus.searchResourceTweets({
+      const searchTweets = await searchResourceTweets({
         q: searchWord,
       });
-      const searchResults = twitterStatus.convertStatusesToResourcesObject(searchTweets);
-      if(searchResults.images.length > 0){
+      const searchResults = convertStatusesToResourcesObject(searchTweets);
+      if (searchResults.images.length > 0) {
         imageResources.push(searchResults.images[Math.floor(Math.random() * searchResults.images.length)]);
       }
     } else {
-      const searchResults = await googleImageSearch.searchGoogleToObjects({
+      const searchResults = await searchGoogleToObjects({
         q: searchWord,
         tbm: 'isch',
       });
-      if(searchResults.length > 0){
+      if (searchResults.length > 0) {
         imageResources.push(searchResults[Math.floor(Math.random() * searchResults.length)]);
       }
     }
   }
+  /*
   const presentation = await googleSlides.createPresentationAndSlides(
     {
       access_token: googleAccessToken,
@@ -53,11 +55,12 @@ export const handler: APIGatewayProxyHandler = async (event, _context) => {
     presentationProperty,
     imageResources,
   );
+  */
   return {
     statusCode: 200,
     headers: {
-      "Access-Control-Allow-Origin" : "*" // Required for CORS support to work
+      'Access-Control-Allow-Origin': '*', // Required for CORS support to work
     },
-    body: JSON.stringify(presentation),
+    body: JSON.stringify(imageResources),
   };
 };

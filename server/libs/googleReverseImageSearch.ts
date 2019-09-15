@@ -58,7 +58,7 @@ export async function searchReverseImages(searchParams) {
     reverse_images: reverseImageObject,
     websites: websites,
   };
-};
+}
 
 function scrapeGoogleWebsites(html) {
   const $ = cheerio.load(html);

@@ -21,12 +21,12 @@ export async function getTweets(apiPath: string, searchParams) {
     params: searchParams,
   });
   return result;
-};
+}
 
 export async function searchTweets(searchParams) {
   const searchQueries = Object.assign({ count: 100 }, searchParams);
   return getTweets('search/tweets', searchQueries);
-};
+}
 
 export async function searchAllTweets(searchParams) {
   let allSearchResults = [];
@@ -47,22 +47,22 @@ export async function searchAllTweets(searchParams) {
     }
   }
   return allSearchResults;
-};
+}
 
 export async function searchResourceTweets(searchParams) {
   const tweets = await searchTweets(searchParams);
   return filterResourceTweets(tweets.data.statuses);
-};
+}
 
 export async function searchAllResourceTweets(searchParams) {
   const tweets = await searchAllTweets(searchParams);
   return filterResourceTweets(tweets);
-};
+}
 
 export async function getTimelineTweets(searchParams) {
   const searchQueries = Object.assign({ count: 200 }, searchParams);
   return getTweets('statuses/user_timeline', searchQueries);
-};
+}
 
 export async function getAllTimelineTweets(searchParams) {
   let allSearchResults = [];
@@ -84,17 +84,17 @@ export async function getAllTimelineTweets(searchParams) {
     }
   }
   return allSearchResults;
-};
+}
 
 export async function getTimelineResourceTweets(searchParams) {
   const tweets = await getTimelineTweets(searchParams);
   return filterResourceTweets(tweets.data);
-};
+}
 
 export async function getAllTimelineResourceTweets(searchParams) {
   const tweets = await getAllTimelineTweets(searchParams);
   return filterResourceTweets(tweets);
-};
+}
 
 function filterResourceTweets(tweets) {
   return tweets.filter(function(tweet) {
@@ -162,4 +162,4 @@ export function convertStatusesToResourcesObject(statuses) {
       videos: twitterVideos,
     };
   }
-};
+}

@@ -3,11 +3,7 @@ const uuid = require('uuid/v4');
 
 const GOOGLE_SLIDE_API_VERSION = 'v1';
 
-export async function createPresentationAndSlides(
-  credentials,
-  presentationProperty = {},
-  resourceObjects = [],
-) {
+export async function createPresentationAndSlides(credentials, presentationProperty = {}, resourceObjects = []) {
   const oauth2Client = new google.auth.OAuth2(process.env.GOOGLE_OAUTH_CLIENT_ID, process.env.GOOGLE_OAUTH_CLIENT_SECRET);
   oauth2Client.setCredentials(credentials);
   const googleSlides = google.slides({ version: GOOGLE_SLIDE_API_VERSION, auth: oauth2Client });
@@ -22,7 +18,7 @@ export async function createPresentationAndSlides(
   });
   const updatePresentationResponse = await googleSlides.presentations.get(newPresentationResponse.data.presentationId);
   return updatePresentationResponse.data;
-};
+}
 
 function createImageSlideObjects(resourceObjects = []) {
   const objects = [];

@@ -33,7 +33,7 @@ export async function searchInstagramToObjects(tag) {
     });
   }
   return results;
-};
+}
 
 export async function searchAllInstagramImages(searchObj) {
   let allSearchResults = [];
@@ -62,4 +62,4 @@ export async function searchAllInstagramImages(searchObj) {
   }
 
   return allSearchResults;
-};
+}
