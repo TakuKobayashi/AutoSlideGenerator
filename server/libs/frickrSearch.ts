@@ -1,8 +1,9 @@
 //const requireRoot = require('app-root-path').require;
 //const util = requireRoot('/libs/util');
-const util = require('./util');
+import { sleep } from './util';
 
-const Flickr = require('flickr-sdk');
+import Flickr from 'flickr-sdk';
+import { FlickrImageResource } from './interfaces/resourceResult';
 
 const FLICKR_PHOTO_ROOT_URL = 'https://www.flickr.com/photos/';
 const PER_PAGE_COUNT = 500;
@@ -11,7 +12,7 @@ const EXTRA_OPTIONS =
 const LIMIT_SEARCH_MILLISECOND = 240000;
 const MAX_REQUEST_SLEEP_MILLISECOND = 1000;
 
-export async function searchFlickrPhotos(searchObj) {
+export async function searchFlickrPhotos(searchObj: { [s: string]: any }) {
   const searchQueries = Object.assign(
     {
       per_page: PER_PAGE_COUNT,
@@ -21,9 +22,9 @@ export async function searchFlickrPhotos(searchObj) {
   );
   const response = await searchFlickr(searchQueries);
   return response.body.photos;
-};
+}
 
-export function convertToPhotoToObject(flickrPhoto) {
+export function convertToPhotoToObject(flickrPhoto): FlickrImageResource {
   const rootWebsiteUrl = FLICKR_PHOTO_ROOT_URL + flickrPhoto.owner.toString() + '/' + flickrPhoto.id.toString() + '/';
   return {
     id: flickrPhoto.id,
@@ -46,11 +47,11 @@ export function convertToPhotoToObject(flickrPhoto) {
       flickrPhoto.url_s ||
       flickrPhoto.url_t ||
       flickrPhoto.url_sq,
-  };
-};
+  } as FlickrImageResource;
+}
 
-export async function searchAllFlickrPhotos(searchObj) {
-  const allSearchResults = [];
+export async function searchAllFlickrPhotos(searchObj: { [s: string]: any }): Promise<FlickrImageResource[]> {
+  const allSearchResults: FlickrImageResource[] = [];
   let pageNumber = 1;
   const startTime = new Date().getTime();
   let retryCounter = 0;
@@ -69,7 +70,7 @@ export async function searchAllFlickrPhotos(searchObj) {
       if (retryCounter >= 5) {
         break;
       } else {
-        await util.sleep(MAX_REQUEST_SLEEP_MILLISECOND);
+        await sleep(MAX_REQUEST_SLEEP_MILLISECOND);
         continue;
       }
     }
@@ -83,12 +84,12 @@ export async function searchAllFlickrPhotos(searchObj) {
     }
     const elapsedMilliSecond = new Date().getTime() - requestStartTime;
     if (elapsedMilliSecond < MAX_REQUEST_SLEEP_MILLISECOND) {
-      await util.sleep(elapsedMilliSecond);
+      await sleep(elapsedMilliSecond);
     }
   }
 
   return allSearchResults;
-};
+}
 
 async function searchFlickr(searchParams) {
   const flickr = new Flickr(process.env.FLICKR_APIKEY);

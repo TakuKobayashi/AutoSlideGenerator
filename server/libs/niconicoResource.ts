@@ -1,12 +1,13 @@
-const cheerio = require('cheerio');
-const axios = require('axios');
+import { load } from 'cheerio';
+import axios from 'axios';
+import { NiconicoVideoResource } from './interfaces/resourceResult';
 
-export async function scrapeResourceFromUrl(url) {
+export async function scrapeResourceFromUrl(url: string): Promise<NiconicoVideoResource[]> {
   const niconicoPageResponse = await axios.get(url);
-  const niconicoPageHeaders = niconicoPageResponse.headers['set-cookie'] || [];
-  const shouldAttachCookieHeaderValue = niconicoPageHeaders.find((cookie) => cookie.includes('nicohistory='));
-  const $ = cheerio.load(niconicoPageResponse.data);
-  const results = [];
+  const niconicoPageHeaders: string[] = niconicoPageResponse.headers['set-cookie'] || [];
+  const shouldAttachCookieHeaderValue = niconicoPageHeaders.find((cookie: string) => cookie.includes('nicohistory='));
+  const $ = load(niconicoPageResponse.data);
+  const results: NiconicoVideoResource[] = [];
 
   for (const element of Object.values($('#js-initial-watch-data'))) {
     const apiData = $(element).data('api-data');
@@ -29,4 +30,4 @@ export async function scrapeResourceFromUrl(url) {
     });
   }
   return results;
-};
+}

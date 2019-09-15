@@ -1,6 +1,6 @@
-import {ResourceResult } from './resourceResult'
+import { ResourceResult } from './resourceResult';
 
-export interface ApiRenderTemplate{
+export interface ApiRenderTemplate {
   message: string;
   executed_millisecond: number;
   results: ResourceResult[];

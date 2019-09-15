@@ -4,15 +4,14 @@ export async function sleep(waitMilliseconds: number): Promise<void> {
       resolve();
     }, waitMilliseconds);
   });
-};
-
+}
 
 export function tryParseJSON(text: string, isRecordErrorLog: boolean = false): any {
   let json = null;
   try {
     json = JSON.parse(text);
   } catch (error) {
-    if(isRecordErrorLog){
+    if (isRecordErrorLog) {
       console.log(error);
     }
   }

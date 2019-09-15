@@ -1,8 +1,9 @@
 //const requireRoot = require('app-root-path').require;
 //const util = requireRoot('/libs/util');
-const util = require('./util');
-const cheerio = require('cheerio');
-const axios = require('axios');
+import { GoogleImageResource } from './interfaces/resourceResult';
+import { sleep, tryParseJSON } from './util';
+import { load } from 'cheerio';
+import axios, { AxiosResponse } from 'axios';
 
 const GOOGLE_SEARCH_ROOT_URL = 'https://www.google.co.jp/search';
 const USER_AGENT =
@@ -10,13 +11,13 @@ const USER_AGENT =
 const LIMIT_SEARCH_MILLISECOND = 240000;
 const MAX_REQUEST_SLEEP_MILLISECOND = 1000;
 
-export async function searchGoogleToObjects(searchParams) {
+export async function searchGoogleToObjects(searchParams: { [s: string]: any }): Promise<GoogleImageResource[]> {
   const response = await searchGoogle(searchParams);
-  const $ = cheerio.load(response.data);
-  const results = [];
+  const $ = load(response.data);
+  const results: GoogleImageResource[] = [];
 
   for (const element of Object.values($('.rg_meta'))) {
-    const meta = util.tryParseJSON($(element).text());
+    const meta = tryParseJSON($(element).text());
     if (!meta) continue;
     results.push({
       id: meta.id,
@@ -26,13 +27,13 @@ export async function searchGoogleToObjects(searchParams) {
       describe: meta.s,
       website_url: meta.ru,
       image_url: meta.ou,
-    });
+    } as GoogleImageResource);
   }
   return results;
-};
+}
 
-export async function searchAllGoogleImages(searchObj) {
-  let allSearchResults = [];
+export async function searchAllGoogleImages(searchObj: { [s: string]: any }): Promise<GoogleImageResource[]> {
+  let allSearchResults: GoogleImageResource[] = [];
   let counter = 0;
   const startTime = new Date().getTime();
   while (new Date().getTime() - startTime < LIMIT_SEARCH_MILLISECOND) {
@@ -50,17 +51,17 @@ export async function searchAllGoogleImages(searchObj) {
       break;
     }
     counter = counter + searchResults.length;
-    allSearchResults = allSearchResults.concat(searchResults);
+    allSearchResults.push(...searchResults);
     const elapsedMilliSecond = new Date().getTime() - requestStartTime;
     if (elapsedMilliSecond < MAX_REQUEST_SLEEP_MILLISECOND) {
-      await util.sleep(elapsedMilliSecond);
+      await sleep(elapsedMilliSecond);
     }
   }
 
   return allSearchResults;
-};
+}
 
-async function searchGoogle(searchParams) {
+async function searchGoogle(searchParams: { [s: string]: any }): Promise<AxiosResponse> {
   return axios.get(GOOGLE_SEARCH_ROOT_URL, {
     params: searchParams,
     headers: {
