@@ -1,15 +1,32 @@
 export interface ResourceResult {
-  websites: Partial<WebsiteResource>[];
-  images: Partial<ImageResource>[];
-  videos: Partial<VideoResource>[];
+  websites?: WebsiteResource[];
+  images?: ImageResource[];
+  videos?: VideoResource[];
+  reverse_images?: ReverseImageObject,
 }
 
-export interface WebsiteResource {
+export interface ReverseImageObject {
+  response_url: string;
+  suggest_word: string;
+  image_query_tag: string;
+  candidates: CandidateWebsite[];
+  relative_image_search_query: string;
+}
+
+export interface CandidateWebsite extends WebsiteResource{
+  keyword: string;
+}
+
+export interface TwitterWebsiteResource extends WebsiteResource{
   id: string;
   user_id: string;
   user_name: string;
   tweet: string;
-  website_url: string;
+}
+
+export interface WebsiteResource {
+  url: string;
+  title?: string;
 }
 
 export interface TwitterImageResource extends ImageResource {

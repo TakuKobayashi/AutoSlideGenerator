@@ -1,34 +1,42 @@
-import { ImageResource, TwitterImageResource, VideoResource, WebsiteResource } from './interfaces/resourceResult';
+import {
+  ResourceResult,
+  TwitterImageResource,
+  TwitterVideoResource,
+  TwitterWebsiteResource,
+} from './interfaces/resourceResult';
+import * as Twitter from 'twitter';
+
 const TWITTER_ROOT_URL = 'https://twitter.com/';
 
-const Twitter = require('twitter-promise');
-const twitter = new Twitter({
-  consumer_key: process.env.TWITTER_CONSUMER_KEY,
-  consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-  access_token_key: process.env.TWITTER_BOT_ACCESS_TOKEN,
-  access_token_secret: process.env.TWITTER_BOT_ACCESS_TOKEN_SECRET,
-});
+function newTwitter(): Twitter {
+  return new Twitter({
+    consumer_key: process.env.TWITTER_CONSUMER_KEY,
+    consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+    access_token_key: process.env.TWITTER_BOT_ACCESS_TOKEN,
+    access_token_secret: process.env.TWITTER_BOT_ACCESS_TOKEN_SECRET,
+  });
+}
 
-export async function getTweets(apiPath: string, searchParams) {
+export async function getTweets(apiPath: string, searchParams: { [s: string]: any }): Promise<Twitter.ResponseData> {
   const keys = Object.keys(searchParams);
   for (const key of keys) {
     if (!searchParams[key]) {
       delete searchParams[key];
     }
   }
-  const result = await twitter.get({
-    path: apiPath,
-    params: searchParams,
-  });
-  return result;
+  const result = await newTwitter().get(
+    apiPath,
+    searchParams,
+  );
+  return result as Twitter.ResponseData;
 }
 
-export async function searchTweets(searchParams) {
+export async function searchTweets(searchParams: { [s: string]: any }): Promise<Twitter.ResponseData> {
   const searchQueries = Object.assign({ count: 100 }, searchParams);
   return getTweets('search/tweets', searchQueries);
 }
 
-export async function searchAllTweets(searchParams) {
+export async function searchAllTweets(searchParams: { [s: string]: any }) {
   let allSearchResults = [];
   let maxId = null;
   while (true) {
@@ -37,7 +45,7 @@ export async function searchAllTweets(searchParams) {
     const searchResults = await searchTweets(searchQueries).catch((error) => {
       err = error;
     });
-    if (err) {
+    if (err || !searchResults) {
       break;
     }
     allSearchResults = allSearchResults.concat(searchResults.data.statuses);
@@ -73,7 +81,10 @@ export async function getAllTimelineTweets(searchParams) {
     const searchResults = await getTimelineTweets(searchQueries).catch((error) => {
       err = error;
     });
-    allSearchResults = allSearchResults.concat(searchResults.data);
+    if (err || !searchResults) {
+      break;
+    }
+    allSearchResults.push(...searchResults.data);
     if (searchResults.data.length > 0) {
       maxId = searchResults.data[searchResults.data.length - 1].id;
     } else {
@@ -111,10 +122,10 @@ function filterResourceTweets(tweets) {
   });
 }
 
-export function convertStatusesToResourcesObject(statuses) {
-  const twitterWebsites: WebsiteResource[] = [];
+export function convertStatusesToResourcesObject(statuses): ResourceResult {
+  const twitterWebsites: TwitterWebsiteResource[] = [];
   const twitterImages: TwitterImageResource[] = [];
-  const twitterVideos: VideoResource[] = [];
+  const twitterVideos: TwitterVideoResource[] = [];
   for (const status of statuses) {
     for (const website_url of status.entities.urls) {
       twitterWebsites.push({
@@ -122,7 +133,7 @@ export function convertStatusesToResourcesObject(statuses) {
         user_id: status.user.id.toString(),
         user_name: status.user.screen_name,
         tweet: status.text,
-        website_url: website_url,
+        url: website_url,
       });
     }
     if (status.extended_entities) {

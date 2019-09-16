@@ -9,8 +9,7 @@ const INSTAGRAM_QUERY_API_URL = 'https://www.instagram.com/graphql/query/';
 const INSTAGRAM_TARGET_JS_FILENAME = 'Consumer.js';
 
 const GOOGLE_SEARCH_ROOT_URL = 'https://www.google.co.jp/search';
-const USER_AGENT =
-  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36';
+const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36';
 const LIMIT_SEARCH_MILLISECOND = 240000;
 const MAX_REQUEST_SLEEP_MILLISECOND = 1000;
 

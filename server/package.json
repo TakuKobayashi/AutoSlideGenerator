@@ -22,7 +22,7 @@
     "node-dynamodb-orm": "^0.0.5",
     "serverless": "^1.48.2",
     "source-map-support": "^0.5.12",
-    "twitter-promise": "^1.2.0",
+    "twitter": "^1.7.1",
     "url": "^0.11.0",
     "uuid": "^3.3.2",
     "web-push": "^3.3.5"
@@ -35,6 +35,7 @@
     "@types/geolib": "^2.0.23",
     "@types/ngeohash": "^0.6.2",
     "@types/node": "^12.6.8",
+    "@types/twitter": "^1.7.0",
     "@types/uuid": "^3.4.5",
     "@types/web-push": "^3.3.0",
     "cors": "^2.8.5",

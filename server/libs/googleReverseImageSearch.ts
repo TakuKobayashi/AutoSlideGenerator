@@ -1,14 +1,14 @@
-const cheerio = require('cheerio');
-const axios = require('axios');
-const url = require('url');
+import { parse } from 'url';
+import { load } from 'cheerio';
+import axios, { AxiosResponse } from 'axios';
+import { CandidateWebsite, ResourceResult, ReverseImageObject, WebsiteResource } from './interfaces/resourceResult';
 
-const USER_AGENT =
-  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36';
+const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36';
 const GOOGLE_REVERSE_SEARCH_ROOT_URL = 'https://www.google.co.jp/searchbyimage';
 
-export async function searchReverseImages(searchParams) {
+export async function searchReverseImages(searchParams: { [s: string]: any }): Promise<ResourceResult> {
   // 初期化
-  const reverseImageObject = {
+  const reverseImageObject: ReverseImageObject = {
     response_url: '',
     suggest_word: '',
     image_query_tag: '',
@@ -17,7 +17,7 @@ export async function searchReverseImages(searchParams) {
   };
   const response = await requestReverseImage(searchParams);
   reverseImageObject.response_url = response.request.res.responseUrl;
-  const $ = cheerio.load(response.data);
+  const $ = load(response.data);
   for (const searchElement of Object.values($('form').find('input'))) {
     const ele = $(searchElement);
     // 今検索しているキーワード
@@ -29,7 +29,7 @@ export async function searchReverseImages(searchParams) {
     }
   }
 
-  const candidates = [];
+  const candidates: CandidateWebsite[] = [];
   for (const candidateElement of Object.values($('.r5a77d').find('a'))) {
     const ele = $(candidateElement);
     if (!ele.attr('href')) continue;
@@ -48,7 +48,7 @@ export async function searchReverseImages(searchParams) {
       .attr('href');
     if (relationImageSearchPath) {
       // ここで出てきたQueryをそのまま画像検索のAPIに投げてくれれば、それはそれでやる形にする
-      reverseImageObject.relative_image_search_query = url.parse(relationImageSearchPath).query;
+      reverseImageObject.relative_image_search_query = parse(relationImageSearchPath).query;
       break;
     }
   }
@@ -60,9 +60,9 @@ export async function searchReverseImages(searchParams) {
   };
 }
 
-function scrapeGoogleWebsites(html) {
-  const $ = cheerio.load(html);
-  const websites = [];
+function scrapeGoogleWebsites(html: string): WebsiteResource[] {
+  const $ = load(html);
+  const websites: WebsiteResource[] = [];
   for (const element of Object.values($('#search').find('a'))) {
     const ele = $(element);
     const linkAttributes = ele.attr();
@@ -80,7 +80,7 @@ function scrapeGoogleWebsites(html) {
   return websites;
 }
 
-async function requestReverseImage(searchParams) {
+async function requestReverseImage(searchParams: { [s: string]: any }): Promise<AxiosResponse> {
   return axios.get(GOOGLE_REVERSE_SEARCH_ROOT_URL, {
     params: searchParams,
     headers: {

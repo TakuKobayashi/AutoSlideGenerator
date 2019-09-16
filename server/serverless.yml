@@ -11,17 +11,27 @@ plugins:
   - serverless-offline
 
 custom:
-  webpack:
-    webpackConfig: 'webpack.config.js'   # Name of webpack configuration file
-    includeModules: false   # Node modules configuration for packaging
-    packager: 'yarn'   # Packager that will be used to package your external modules
-    excludeFiles: lambda/**/*.spec.ts # Provide a glob for files to ignore
-
-# コレが大事
-#
-# ref.: https://serverless.com/framework/docs/providers/aws/guide/packaging/#packaging-functions-separately
-package:
-  individually: true
+  dotenv:
+    path: ./.env
+    include:
+      - TWITTER_CONSUMER_KEY
+      - TWITTER_CONSUMER_SECRET
+      - TWITTER_BOT_ACCESS_TOKEN
+      - TWITTER_BOT_ACCESS_TOKEN_SECRET
+      - GOOGLE_API_KEY
+      - GOOGLE_OAUTH_CLIENT_ID
+      - GOOGLE_OAUTH_CLIENT_SECRET
+      - GOOGLE_OAUTH_BOT_REFRESH_TOKEN
+      - FLICKR_APIKEY
+      - FLICKR_SECRET
+      - GETTY_IMAGES_STANDARD_KEY
+      - GETTY_IMAGES_STANDARD_SECRET
+      - GETTY_IMAGES_EMBED_KEY
+      - GETTY_IMAGES_EMBED_SECRET
+      - PIXIV_CLIENT_ID
+      - PIXIV_CLIENT_SECRET
+      - PIXIV_USERNAME
+      - PIXIV_PASSWORD
 
 provider:
   name: aws

@@ -35,6 +35,7 @@ export default class GenerateSlideForm extends React.Component {
 
   generateSlideSubmit(event) {
     this.setState({ loading: true });
+    /*
     if (!Push.Permission.has()) {
       const self = this;
       Push.Permission.request(
@@ -48,6 +49,8 @@ export default class GenerateSlideForm extends React.Component {
     } else {
       this.generateSlideRequest();
     }
+    */
+    this.generateSlideRequest();
     event.preventDefault();
   }
 
