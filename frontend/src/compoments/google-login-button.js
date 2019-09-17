@@ -28,7 +28,7 @@ export default class GoogleLoginButton extends React.Component {
       tokenObj: response.tokenObj,
       accessToken: response.accessToken,
       googleId: response.response,
-      tokenId: response.tokenId
+      tokenId: response.tokenId,
     });
   }
 

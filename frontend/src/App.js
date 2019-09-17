@@ -11,21 +11,19 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    console.log(this.props)
+    console.log(this.props);
   }
 
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <video autoPlay loop muted poster={backgroundVideoJpg} id="bgvid">
-            <source src={backgroundVideoWebm} type="video/webm" />
-            <source src={backgroundVideoMP4} type="video/mp4" />
-          </video>
-          <GoogleLoginButton {...this.props} />
-          <img src={logo} className="App-logo" alt="logo" />
-          <GenerateSlideForm {...this.props} />
-        </header>
+        <video autoPlay loop muted poster={backgroundVideoJpg} id="bgvid">
+          <source src={backgroundVideoWebm} type="video/webm" />
+          <source src={backgroundVideoMP4} type="video/mp4" />
+        </video>
+        <GoogleLoginButton {...this.props} />
+        <img src={logo} className="App-logo" alt="logo" />
+        <GenerateSlideForm {...this.props} />
       </div>
     );
   }

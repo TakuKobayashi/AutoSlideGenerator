@@ -1,17 +1,10 @@
 import React from 'react';
 import axios from 'axios';
-import { Collapse } from 'react-collapse';
-import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
-import TextField from '@material-ui/core/TextField';
-import Select from '@material-ui/core/Select';
-import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Push from 'push.js';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faUsers, faCog } from '@fortawesome/free-solid-svg-icons';
+import { Card, Input, Accordion, AccordionSection, Select, Button, CheckboxToggle, Textarea } from 'react-rainbow-components';
 
 export default class GenerateSlideForm extends React.Component {
   constructor(props) {
@@ -61,23 +54,23 @@ export default class GenerateSlideForm extends React.Component {
 
   async generateSlideRequest() {
     console.log(this.state);
-    const slideWords = this.state.words.join(",").split(",")
-    if(slideWords.length <= 0){
+    const slideWords = this.state.words.join(',').split(',');
+    if (slideWords.length <= 0) {
       return;
     }
     let slideTitle = this.state.slideTitle;
-    if(!slideTitle){
+    if (!slideTitle) {
       slideTitle = slideWords[0];
     }
-    const res = await axios.post(process.env.REACT_APP_API_ROOT_URL + "/slide/generate", {
-      words: slideWords.join(","),
+    const res = await axios.post(process.env.REACT_APP_API_ROOT_URL + '/slide/generate', {
+      words: slideWords.join(','),
       searchWebsiteType: this.state.searchWebsiteType,
       exportType: this.state.exportType,
       pushEnable: this.state.pushEnable,
       googleAccessToken: this.state.googleAccount.accessToken,
       presentationProperty: {
         title: slideTitle,
-      }
+      },
     });
     this.setState({ loading: false });
     console.log(res);
@@ -91,41 +84,49 @@ export default class GenerateSlideForm extends React.Component {
 
   render() {
     return (
-      <FormControl>
-        <TextField
-          label="image search words"
-          placeholder="スライドにしたい画像のキーワードを,(カンマ区切り)で入力していってください"
-          fullWidth={true}
-          onChange={(e) => this.setState({ words: [e.target.value] })}
-        />
-        <Collapse isOpened={true || false}>
-          <InputLabel htmlFor="age-simple">Age</InputLabel>
-          <Select onChange={this.onSelectChanged} autoWidth={true} name="searchWebsiteType" value={this.state.searchWebsiteType}>
-            <MenuItem value="google">Google画像検索</MenuItem>
-            <MenuItem value="twitter">Twitter</MenuItem>
-            <MenuItem value="flickr">Flickr</MenuItem>
-            <MenuItem value="instagram">Instagram</MenuItem>
-          </Select>
-          <FormHelperText>Label + placeholder</FormHelperText>
-          <TextField
-            label="slide title"
-            placeholder="スライド名を決めたい場合は入力してください"
-            fullWidth={true}
-            onChange={(e) => this.setState({ slideTitle: e.target.value })}
+      <div className="rainbow-p-vertical_large rainbow-p-horizontal_xx-large rainbow-m-horizontal_xx-large">
+        <Card>
+          <Textarea
+            placeholder="スライドにしたい画像のキーワードを,(カンマ区切り)で入力していってください"
+            onChange={(e) => this.setState({ words: [e.target.value] })}
+            rows={2}
           />
-          <Select onChange={this.onSelectChanged} name="exportType" value={this.state.exportType}>
-            <MenuItem value="googleSlide">Google Slide</MenuItem>
-            <MenuItem value="html">HTML</MenuItem>
-          </Select>
-          <FormControlLabel
-            control={<Checkbox checked={this.state.pushEnable} onChange={this.onPushChecked} />}
-            label="出来上がったらプッシュ通知でお知らせする"
-          />
-        </Collapse>
-        <Button variant="contained" size="large" fullWidth={true} color="primary" onClick={this.generateSlideSubmit} disabled={this.state.loading}>
-          {this.state.loading ? <CircularProgress /> : '作成する'}
-        </Button>
-      </FormControl>
+
+          <Accordion>
+            <AccordionSection icon={<FontAwesomeIcon icon={faCog} className="rainbow-color_brand" />} label="詳細設定">
+              <Select
+                label="素材の収集元"
+                options={[
+                  { value: 'google', label: 'Google画像検索' },
+                  { value: 'twitter', label: 'Twitter' },
+                  { value: 'flickr', label: 'Flickr' },
+                  { value: 'instagram', label: 'Instagram' },
+                ]}
+                onChange={this.onSelectChanged}
+              />
+              <Input
+                label="slide title"
+                placeholder="スライド名を決めたい場合は入力してください"
+                onChange={(e) => this.setState({ slideTitle: e.target.value })}
+                type="text"
+              />
+              <Select
+                label="Slideの出力先"
+                options={[{ value: 'googleSlide', label: 'Google Slide' }, { value: 'html', label: 'HTML' }]}
+                name="exportType"
+                value={this.state.exportType}
+                onChange={this.onSelectChanged}
+              />
+              <CheckboxToggle
+                label="出来上がったらプッシュ通知でお知らせする"
+                value={this.state.pushEnable}
+                onChange={this.onPushChecked}
+              />
+            </AccordionSection>
+          </Accordion>
+          <Button label="作成する" onClick={this.generateSlideSubmit} variant="brand" isLoading={this.state.loading} />
+        </Card>
+      </div>
     );
   }
 }
