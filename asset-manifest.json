@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "./static/css/main.4ac31277.chunk.css",
+    "main.js": "./static/js/main.9c7387c5.chunk.js",
+    "main.js.map": "./static/js/main.9c7387c5.chunk.js.map",
+    "runtime~main.js": "./static/js/runtime~main.d653cc00.js",
+    "runtime~main.js.map": "./static/js/runtime~main.d653cc00.js.map",
+    "static/css/2.96849cfc.chunk.css": "./static/css/2.96849cfc.chunk.css",
+    "static/js/2.d0239a5a.chunk.js": "./static/js/2.d0239a5a.chunk.js",
+    "static/js/2.d0239a5a.chunk.js.map": "./static/js/2.d0239a5a.chunk.js.map",
+    "index.html": "./index.html",
+    "precache-manifest.b8de1cb86ff3cc04203867eeedee2c22.js": "./precache-manifest.b8de1cb86ff3cc04203867eeedee2c22.js",
+    "service-worker.js": "./service-worker.js",
+    "static/css/2.96849cfc.chunk.css.map": "./static/css/2.96849cfc.chunk.css.map",
+    "static/css/main.4ac31277.chunk.css.map": "./static/css/main.4ac31277.chunk.css.map",
+    "static/media/AutoSlideGeneratorLogo.png": "./static/media/AutoSlideGeneratorLogo.f86f89da.png",
+    "static/media/Background.webm": "./static/media/Background.04c3c683.webm",
+    "static/media/App.css": "./static/media/Background.0707892f.jpg",
+    "static/media/Background.mp4": "./static/media/Background.a0534386.mp4",
+    "static/media/rainbow-styles.css": "./static/media/Lato-Regular.e9d329fb.svg"
+  }
+}
