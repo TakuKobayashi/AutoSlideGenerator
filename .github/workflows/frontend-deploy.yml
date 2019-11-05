@@ -1,0 +1,55 @@
+name: FrontendDeploy
+
+on:
+  push:
+    branches:
+    - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: setup ubuntu
+      run: sudo apt-get --quiet update --yes
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: yarn install
+      working-directory: ./frontend
+      run: |
+        yarn install
+    - name: yarn build
+      working-directory: ./frontend
+      run: |
+        yarn run build
+    - name: Archive Build Artifact
+      uses: actions/upload-artifact@master
+      with:
+        name: build
+        path: ./frontend/build
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v1
+    - name: Download Artifact
+      uses: actions/download-artifact@master
+      with:
+        name: build
+    - name: deploy
+      uses: peaceiris/actions-gh-pages@v2.5.0
+      env:
+        ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+        PUBLISH_BRANCH: gh-pages
+        PUBLISH_DIR: build
