@@ -35,16 +35,21 @@ class App extends React.Component {
           <source src={backgroundVideoWebm} type="video/webm" />
           <source src={backgroundVideoMP4} type="video/mp4" />
         </video>
-        <GoogleLogin
-          clientId={process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID}
-          buttonText="Login"
-          responseType="id_token code"
-          accessType="online"
-          onSuccess={this.responseGoogle}
-          onFailure={this.responseGoogle}
-          cookiePolicy={'single_host_origin'}
-        />
-        <img src={logo} className="App-logo" alt="logo" />
+        <div>
+          <img src={logo} className="App-logo" alt="logo" />
+        </div>
+        <p>
+          Google SlideでSlideを作成する場合はGoogleにLoginしてください:
+          <GoogleLogin
+            clientId={process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID}
+            buttonText="Login"
+            responseType="id_token code"
+            accessType="online"
+            onSuccess={this.responseGoogle}
+            onFailure={this.responseGoogle}
+            cookiePolicy={'single_host_origin'}
+          />
+        </p>
         <GenerateSlideForm {...this.props} />
       </div>
     );
