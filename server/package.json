@@ -38,6 +38,7 @@
     "@types/twitter": "^1.7.0",
     "@types/uuid": "^3.4.5",
     "@types/web-push": "^3.3.0",
+    "awesome-typescript-loader": "^5.2.1",
     "cors": "^2.8.5",
     "documentation": "^11.0.1",
     "dotenv": "^8.0.0",

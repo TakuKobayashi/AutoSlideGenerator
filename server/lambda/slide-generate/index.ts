@@ -7,7 +7,7 @@ import 'source-map-support/register';
 //const twitterStatus = requireRoot('/libs/twitterStatus');
 //const googleSlides = requireRoot('/libs/googleSlides');
 import { searchGoogleToObjects } from '../../libs/googleImageSearch';
-//import { searchFlickrPhotos, convertToPhotoToObject } from '../../libs/frickrSearch';
+import { searchFlickrPhotos, convertToPhotoToObject } from '../../libs/frickrSearch';
 import { searchResourceTweets, convertStatusesToResourcesObject } from '../../libs/twitterStatus';
 import { createPresentationAndSlides } from '../../libs/googleSlides';
 
@@ -22,7 +22,6 @@ export const handler: APIGatewayProxyHandler = async (event, _context) => {
   const imageResources = [];
   for (const searchWord of searchWords) {
     if (requestOption.searchWebsiteType === 'frickr') {
-      /*
       const searchPhotos = await searchFlickrPhotos({
         text: searchWord,
       });
@@ -30,7 +29,6 @@ export const handler: APIGatewayProxyHandler = async (event, _context) => {
         const targetPhoto = searchPhotos.photo[Math.floor(Math.random() * searchPhotos.photo.length)];
         imageResources.push(convertToPhotoToObject(targetPhoto));
       }
-      */
     } else if (requestOption.searchWebsiteType === 'twitter') {
       const searchTweets = await searchResourceTweets({
         q: searchWord,
