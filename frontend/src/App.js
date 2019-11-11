@@ -1,4 +1,5 @@
 import React from 'react';
+import GoogleLogin from 'react-google-login';
 import logo from './AutoSlideGeneratorLogo.png';
 import backgroundVideoMP4 from './Background.mp4';
 import backgroundVideoWebm from './Background.webm';
@@ -11,20 +12,19 @@ class App extends React.Component {
     super(props);
     this.state = {
       isSignedIn: false,
-    }
+    };
+    this.responseGoogle = this.responseGoogle.bind(this);
   }
 
-  componentDidMount() {
-    window.gapi.load('client:auth2', () => {
-      window.gapi.client.init({
-        clientId: process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID, //"clientID"は個人で取得する
-        scope: "email"
-      }).then(() => {
-         const auth = window.gapi.auth2.getAuthInstance();
-         console.log(auth);
-
-         this.setState({ isSignedIn: auth.isSignedIn.get() });
-      });
+  responseGoogle(response) {
+    this.setState({
+      googleLogin: {
+        profileObj: response.profileObj,
+        tokenObj: response.tokenObj,
+        accessToken: response.accessToken,
+        googleId: response.response,
+        tokenId: response.tokenId,
+      },
     });
   }
 
@@ -35,6 +35,15 @@ class App extends React.Component {
           <source src={backgroundVideoWebm} type="video/webm" />
           <source src={backgroundVideoMP4} type="video/mp4" />
         </video>
+        <GoogleLogin
+          clientId={process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID}
+          buttonText="Login"
+          responseType="id_token code"
+          accessType="online"
+          onSuccess={this.responseGoogle}
+          onFailure={this.responseGoogle}
+          cookiePolicy={'single_host_origin'}
+        />
         <img src={logo} className="App-logo" alt="logo" />
         <GenerateSlideForm {...this.props} />
       </div>
