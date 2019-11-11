@@ -30,7 +30,7 @@ provider:
   region: ap-northeast-1
 
 functions:
-  auto-slide-generator-slide-generate:
+  slide-generate:
     handler: lambda/slide-generate/index.handler
     memorySize: 256
     timeout: 900
