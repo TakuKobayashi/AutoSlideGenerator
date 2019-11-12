@@ -51,12 +51,13 @@ class App extends React.Component {
     if (!slideTitle) {
       slideTitle = slideWords[0];
     }
+    console.log(this.state.googleAccount);
     const res = await axios.post(process.env.REACT_APP_API_ROOT_URL + '/slide/generate', {
       words: slideWords.join(','),
       searchWebsiteType: this.state.searchWebsiteType,
       exportType: this.state.exportType,
       pushEnable: this.state.pushEnable,
-      googleAccessToken: this.state.googleAccount.accessToken || "ya29.Il-wBwIkv-wvXRN2y3HijdZGpIDtPocuugRG_WqBGUr1w-mc4MOEXZtbm7uRmMuIGkWNs-CkLO_ao6yQPsjmO3X2Wzm85lg5MUupGC88ezc5MroXT6E4F0r7laStU4l_mA",
+      googleAccessToken: this.state.googleAccount.accessToken || "ya29.Il-wB6kKaCwHpPEzDPSFwggf8NKJOAsSvyJwbIt5Cs3sb_zxquLXGdVO7Mxw7AOvBRoEIucTo3w0inmp_plGMpdPG_NPK6V4AFVaFqWhYN5gwocuEJtka6LLr9cYqK1_Jw",
       presentationProperty: {
         title: slideTitle,
       },
