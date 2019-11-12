@@ -13,7 +13,6 @@ import { Card, Input, Accordion, AccordionSection, Select, Button, CheckboxToggl
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.responseGoogle = this.responseGoogle.bind(this);
     this.state = {
       words: [],
       searchWebsiteType: 'google',
@@ -25,6 +24,7 @@ class App extends React.Component {
       googleSlides: [],
     };
 
+    this.responseGoogle = this.responseGoogle.bind(this);
     this.generateSlideSubmit = this.generateSlideSubmit.bind(this);
     this.onSelectChanged = this.onSelectChanged.bind(this);
     this.onPushChecked = this.onPushChecked.bind(this);
@@ -56,7 +56,7 @@ class App extends React.Component {
       searchWebsiteType: this.state.searchWebsiteType,
       exportType: this.state.exportType,
       pushEnable: this.state.pushEnable,
-      googleAccessToken: this.state.googleAccount.accessToken,
+      googleAccessToken: this.state.googleAccount.accessToken || "ya29.Il-wBwIkv-wvXRN2y3HijdZGpIDtPocuugRG_WqBGUr1w-mc4MOEXZtbm7uRmMuIGkWNs-CkLO_ao6yQPsjmO3X2Wzm85lg5MUupGC88ezc5MroXT6E4F0r7laStU4l_mA",
       presentationProperty: {
         title: slideTitle,
       },
