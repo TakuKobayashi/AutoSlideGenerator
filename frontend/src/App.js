@@ -22,6 +22,7 @@ class App extends React.Component {
       loading: false,
       slideTitle: '',
       googleAccount: {},
+      googleSlides: [],
     };
 
     this.generateSlideSubmit = this.generateSlideSubmit.bind(this);
@@ -60,7 +61,10 @@ class App extends React.Component {
         title: slideTitle,
       },
     });
-    this.setState({ loading: false });
+    this.setState({
+      loading: false,
+      googleSlides: this.state.googleSlides.concat([res.data]),
+    });
     console.log(res);
   }
 
@@ -84,6 +88,11 @@ class App extends React.Component {
   }
 
   render() {
+    const slideLinks = []
+    for(const slide of this.state.googleSlides){
+      slideLinks.push(<li><a href="https://docs.google.com/presentation/d/{slide.data.presentationId}/edit">{slide.data.title}</a></li>);
+    }
+
     return (
       <div className="App">
         <video autoPlay loop muted poster={backgroundVideoJpg} id="bgvid">
@@ -147,6 +156,9 @@ class App extends React.Component {
             <Button label="作成する" onClick={this.generateSlideSubmit} variant="brand" isLoading={this.state.loading} />
           </Card>
         </div>
+        <ul>
+          {slideLinks}
+        </ul>
       </div>
     );
   }
