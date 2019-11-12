@@ -26,6 +26,8 @@ class App extends React.Component {
         tokenId: response.tokenId,
       },
     });
+    console.log(this.state);
+    console.log(response);
   }
 
   render() {

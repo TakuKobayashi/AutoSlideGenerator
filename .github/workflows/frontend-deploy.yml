@@ -34,8 +34,8 @@ jobs:
         REACT_APP_GOOGLE_OAUTH_CLIENT_SECRET: ${{ secrets.REACT_APP_GOOGLE_OAUTH_CLIENT_SECRET }}
       run: |
         echo "REACT_APP_API_ROOT_URL=${REACT_APP_API_ROOT_URL}" >> ./.env.production
-        echo "REACT_APP_GOOGLE_OAUTH_CLIENT_ID=${GOOGLE_OAUTH_CLIENT_ID}" >> ./.env.production
-        echo "REACT_APP_GOOGLE_OAUTH_CLIENT_SECRET=${GOOGLE_OAUTH_CLIENT_SECRET}" >> ./.env.production
+        echo "REACT_APP_GOOGLE_OAUTH_CLIENT_ID=${REACT_APP_GOOGLE_OAUTH_CLIENT_ID}" >> ./.env.production
+        echo "REACT_APP_GOOGLE_OAUTH_CLIENT_SECRET=${REACT_APP_GOOGLE_OAUTH_CLIENT_SECRET}" >> ./.env.production
     - name: yarn build
       working-directory: ./frontend
       run: |
