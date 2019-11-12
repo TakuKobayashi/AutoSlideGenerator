@@ -61,11 +61,11 @@ class App extends React.Component {
         title: slideTitle,
       },
     });
+    console.log(res);
     this.setState({
       loading: false,
       googleSlides: this.state.googleSlides.concat([res.data]),
     });
-    console.log(res);
   }
 
   onPushChecked(event, checked) {
@@ -90,7 +90,8 @@ class App extends React.Component {
   render() {
     const slideLinks = []
     for(const slide of this.state.googleSlides){
-      slideLinks.push(<li><a href="https://docs.google.com/presentation/d/{slide.data.presentationId}/edit">{slide.data.title}</a></li>);
+      const url = "https://docs.google.com/presentation/d/" + slide.presentationId + "/edit"
+      slideLinks.push(<li key={slide.presentationId}><a href={url}>{slide.title}</a></li>);
     }
 
     return (
