@@ -16,7 +16,7 @@ export async function createPresentationAndSlides(credentials, presentationPrope
       requests: slideImageObjects,
     },
   });
-  const updatePresentationResponse = await googleSlides.presentations.get(newPresentationResponse.data.presentationId);
+  const updatePresentationResponse = await googleSlides.presentations.get({presentationId: newPresentationResponse.data.presentationId});
   return updatePresentationResponse.data;
 }
 
