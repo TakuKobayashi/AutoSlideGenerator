@@ -49,20 +49,18 @@ export const handler: APIGatewayProxyHandler = async (event, _context) => {
       }
     }
   }
-  /*
-  const presentation = await googleSlides.createPresentationAndSlides(
+  const presentation = await createPresentationAndSlides(
     {
       access_token: googleAccessToken,
     },
     presentationProperty,
     imageResources,
   );
-  */
   return {
     statusCode: 200,
     headers: {
       'Access-Control-Allow-Origin': '*', // Required for CORS support to work
     },
-    body: JSON.stringify(imageResources),
+    body: JSON.stringify(presentation),
   };
 };
