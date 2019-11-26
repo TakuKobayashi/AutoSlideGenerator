@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "main": "handler.js",
   "scripts": {
-    "build": "node lambdaBuild.js",
     "format": "prettier --config .prettierrc --write '{lambda,libs}/**/*.{ts,js}'",
     "serverless": "serverless"
   },

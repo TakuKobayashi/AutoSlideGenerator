@@ -25,7 +25,7 @@
 * Twitter
 * Flickr
 
-## 作っていく中でのメモ
+## 作っていく中でのメモ(React)
 
 特にReactは初めてなので、各種メモしながら進めます
 
@@ -50,7 +50,7 @@ yarn create react-app auto-slide-generator --typescript
 * とりあえず、動かしてみてみる
 
 ```sh
-npm start
+yarn run start
 ```
 
 ### バラす
@@ -58,14 +58,14 @@ npm start
 * ejectをすることでReactプロジェクトをバラバラにしていく(その前にCommitしておいたほうがいい)
 
 ```sh
-npm run eject
+yarn run eject
 ```
 
 ### Tips
 
 #### Typescriptのプロジェクトでエラーになる
 
-Babelのpluginが足りないようでエラーが出ます。
+Babelのpluginが足りないようなのでエラーが出ます。
 エラーへの対応としてpluginをインストールします。
 
 ```
@@ -75,13 +75,13 @@ yarn add @babel/plugin-transform-react-jsx-source @babel/plugin-transform-react-
 #### Buildした時に画面が真っ白になる件の対策
 
 どうやら、ReactでBuildすると絶対パスで読み込められてしまうようです。
-対策として`package.json`に以下のように`"homepage": "."`と追加することで、`build`した時に相対パスを読み込んでくれるようになる。
+対策として`package.json`に以下のように`"homepage": "."`と追加することで`build`した時に相対パスを読み込んでくれるようになります。
 
 ```package.json
   "homepage": "."
 ```
 
-※ Github Pagesなどにdeployした時にうまく反映されないことがある。その時はブラウザのキャッシュを消すことを試してみるといい。
+※ Github Pagesなどにdeployした時にうまく反映されないことがある。その時はブラウザのキャッシュを消して試してみると反映されるかもしれません。
 
 【参考】
 
@@ -89,9 +89,9 @@ yarn add @babel/plugin-transform-react-jsx-source @babel/plugin-transform-react-
 
 他
 
-#### Build先のディレクトリを変更する
+#### Build先のディレクトリを変更する(Github Actionsを使用しない場合)
 
-Github Pagesに出力したいので`build`ディレクトリではなく`一つ前のdocs`ディレクトリに出力してくれると楽なので調整を入れたい。
+`Github Pages`に出力することを想定する場合、 `build`ディレクトリではなく`一つ前のdocs`ディレクトリに出力してくれると楽になります。
 その場合は `/config/paths.js` の
 
 ```javascript
@@ -110,7 +110,7 @@ module.exports = {
   ...
 ```
 
-このように変更すればいい。
+このように変更すると出力するディレクトリを変更することができます。
 
 【参考】
 
@@ -118,42 +118,48 @@ module.exports = {
 
 #### 外部にClassを作って読み込んだらエラーになる
 
-どうやら、ReactではそのままだとECMAScript2016以降の書き方をしているとうまく拾ってくれないらしい。
-よって、`babelify` `babel-preset-es2015` `babel-preset-react` を追加で入れる必要がある。
+どうやら、ReactではそのままだとECMAScript2016以降の書き方をしているとうまく反映してくれないようです。
+そのため、`babelify` `babel-preset-es2015` `babel-preset-react` を追加で入れる必要があります。
 
 ```sh
 yarn add babelify babel-preset-es2015 babel-preset-react
 ```
 
-この状態で再度reactを立ち上げるとうまくいく。
-また、この場合、HTMLの`class=`などの書き方は`className=`にするよう、よりReactっぽい書き方を要求されるようになる。
+この状態で再度、Reactを立ち上げるとうまくいきます。
 
 【参考】
 
 * [ES5のReact.jsソースをES6ベースに書き換える](https://qiita.com/kuniken/items/2e850daa26a10b5098d6)
 
+#### JSXについて
+
+Reactにおいて、HTMLの`class=`などの書き方は`Javascript`のclassと混同するので`className=`のように、よりReactっぽい書き方を求められます。
+
+
 #### async/awaitが使えない
 
-上記の内容に加えて、async/awaitはECMAScript2017以降に出てきたものなので、これに対応したものもいれないとうまくいかない。
-よって、`babel-preset-es2017` を追加で入れれば解決する。
+上記の内容に加えて、async/awaitはECMAScript2017以降に出てきたものなので、利用する場合は対応したものをインストールする必要があります。
+このため`babel-preset-es2017` を追加でインストールします。
 
 ```sh
 yarn add babel-preset-es2017
 ```
 
-ただし、async/awaitで読み込こむことができても、非同期処理のため、`onSubmit` にフックするようにする前に、`event`をストップさせる必要があるので、通常の`function` と併用する必要がある。
+ただし、async/awaitで読み込こむことができても、非同期処理であるため、`onSubmit` にフックするようにする前に、`event`をストップさせる必要があります。そのため、使用するときは通常の `function` と併用して利用する必要があります。
 
 #### 環境変数を使いたい
-Reactはデフォルトで`dotenv`をインストールしていて、buildする時にここに設定されたものを読み込んでくれる。そのため`.env`ファイルを作成したら、そこで設定した値を読み込んで実行してくれる。
-`${paths.dotenv}.${NODE_ENV}.local`, `${paths.dotenv}.${NODE_ENV}` で`.env`ファイルを読み込んでくれるので環境ごとに実行結果を分けることもできる。
-例えば`development`で`local`の環境変数を使いたい場合、`.env.development.local`というファイルを作って、そこに環境変数を埋め込めばいい。同様に`production` ならば `.env.production`というファイルを作ればいい。
-また、Reactの中で`dotenv`で設定された値を`process.env`で使う場合、`REACT_APP_xxx`と言うように先頭に`REACT_APP_`をつけたものにしないと使用できない。
+
+Reactはデフォルトで `dotenv` をインストールしていて、buildする時にここに設定されたものを読み込んでくれます。そのため `.env` ファイルを作成したら、そこで設定した値を読み込んで実行してくれるようになります
+`${paths.dotenv}.${NODE_ENV}.local`, `${paths.dotenv}.${NODE_ENV}` で`.env`ファイルを読み込んでくれるので環境ごとに実行結果を分けることもできます。
+例えば`development`で`local`の環境変数を使いたい場合、`.env.development.local`というファイルを作って、そこに環境変数を埋め込めば切り替えることができます。同様に`production` ならば `.env.production`というファイルを作ります。
+また、Reactの中で`dotenv`で設定された値を`process.env`で読み込む場合、通常の環境変数では使用できず、 `REACT_APP_xxx`と言うように先頭に`REACT_APP_`をつけたものにしないと使用することができません。
 
 【参考】
 
 * [Reactにおける環境変数を設定について、ようやく理解したので原因と共にまとめてみる_100DaysOfCodeチャレンジ38日目(Day_38:#100DaysOfCode)](https://qiita.com/yuta-ushijima/items/a653e9ca4847276f19cd)
 
 #### リンクを押したら画面を遷移したい(Router)
+
 Reactの特徴としてSPAがある。一つのページだけに完結するようなことはなく、アプリ内の他のページに遷移する必要がある。そのようなものを実装するにはどうしたらいいか解説してみる。
 
 #### とあるCompomentで取得した値を他のCompomentで使いたい(Redux + Flux)
@@ -178,7 +184,7 @@ containerはReduxのStoreが管理する状態遷移をReactのプロパティ�
  * [React+Redux入門](https://qiita.com/erukiti/items/e16aa13ad81d5938374e)
  * [Reduxが分からない人のためにReduxを概念から説明してみる](https://qiita.com/tkow/items/9da7062f9bfa99e848c3)
 
-# Reduxのstateの値をLocalStorageで永続化する
+### Reduxのstateの値をLocalStorageで永続化する
 
 [redux-persist](https://github.com/rt2zz/redux-persist)を使うことでReduxの値をLocalStorageに保存することができる。
 
@@ -215,8 +221,9 @@ app.use(cors());
 
 * [Access-Control-Allow-Origin: Dealing with CORS Errors in React and Express](https://daveceddia.com/access-control-allow-origin-cors-errors-in-react-express/)
 
-### Google Slide APIを作ってSlide作成
-#### 準備
+## 作っていく中でのメモ(Google Slide API)
+
+### 準備
 [Google Cloud Console](https://console.cloud.google.com/)にてAPIを登録して、Google DriveとGoogle SlideのAPIを使えるようにする。また、OAuth認証に必要な設定を解放しておく。
 
 ### Reactサイドの準備
@@ -283,6 +290,7 @@ const presentationResponse = await googleSlides.presentations.create({title: "sl
 この時、`objectId`には5文字以上のpresentationの中で一意になるような、5文字以上の`string`を指定する。
 
 #### Slideの中に画像を挿入
+
 上記で作成したSlideの中に画像を挿入するには`createImage`をいれた[CreateImageRequest](https://developers.google.com/slides/reference/rest/v1/presentations/request?hl=ja#CreateImageRequest)の形をいれる。
 
 ```javascript
@@ -304,14 +312,61 @@ const presentationResponse = await googleSlides.presentations.create({title: "sl
 
 この時、`objectId`にはslideとは別の一意になるようなObjectIdをいれる。`pageObjectId`で画像を差し込みたいSlideを指定している。ここでは画像はURLを指定したものでなければならない。
 
-### Serverless を使った AWS へのデプロイ
+## 作っていく中でのメモ(Serverless)
 
-Serverless のフレームワークを使ってAWS Lambda + APIGateway へデプロイして反映させています。
+サーバーは[AWS Lambda](https://aws.amazon.com/jp/lambda/) + [API Gateway](https://aws.amazon.com/jp/api-gateway/)を使用します。
+これらを使用した環境構築において、[Serverless Framework](https://serverless.com/) を使用することで手軽に[AWS Lambda](https://aws.amazon.com/jp/lambda/) に反映できます。今回は [Serverless Framework](https://serverless.com/) を使って環境を構築していきます。
 
 ### Serverlessのインストール
 
+以下のコマンドでインストールすることができます。
 
-### Serverlessでのデプロイ
+```
+npm install -g serverless
+```
+
+また上記のほか、`yarn add serverless`でインストールし、`package.json` の中で
+
+```package.json
+  "scripts": {
+    "serverless": "serverless"
+  },
+```
+
+と記載することで `yarn run serverless` でserverlessコマンドを使用することができます。
+※ このとき、`npm` を使った、`npm run serverless` では後ろに続くコマンドを実行することができません。
+
+インストールしたら、`serverless` または `sls` コマンドを活用することで各種機能を使用することができます。
+
+### Serverless を使った localの開発
+
+作成したAPIにおいて、[AWS Lambda](https://aws.amazon.com/jp/lambda/) に適用させる前にローカル環境にて動作確認を行います。ローカル環境にて実行させるために [serverless-offline](https://github.com/dherault/serverless-offline) をインストールします。
+
+```sh
+yarn add serverless-offline
+```
+
+そして `serverlesss.yml` に以下の内容を記載します。
+
+```serverless.yml
+plugins:
+  - serverless-offline
+```
+
+この状態で以下のコマンドを実行します。
+
+```
+yarn run serverless offline start --port 5000 --watch
+```
+
+これの状態で `http://localhost:5000` を実行し、各種Pathにて動作の確認をすることができます。
+なお [serverless-offline](https://github.com/dherault/serverless-offline) のデフォルトのポートは `3000` です。今回 `--port` にてポートを変更しています。また、`--watch` にて修正した内容がリアルタイムで反映されるようになっています。
+その他、オプションについてはこちらを参照してください。
+
+[serverless-offline](https://github.com/dherault/serverless-offline)
+
+
+### Serverless コマンドでのデプロイ
 
 Serverlessを使ったdeployを成功させるためには各種AWS CLIで各種操作ができる状態の設定をしておく必要があります。
 
@@ -359,7 +414,7 @@ ServerlessでAWSへデプロイするときは上記のように複数のサー�
 serverless remove
 ```
 
-### Serverlessでのcors対策
+### Serverlessでのcors対策について
 
 #### cors
 

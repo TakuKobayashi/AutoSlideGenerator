@@ -39,3 +39,12 @@ functions:
           method: post
           path: slide/generate
           cors: true
+
+  google-oauth:
+    handler: lambda/google-oauth/index.handler
+    memorySize: 128
+    timeout: 900
+    events:
+      - http:
+          method: get
+          path: google/oauth
