@@ -17,6 +17,7 @@
     "flickr-sdk": "^3.9.0",
     "geolib": "^3.0.3",
     "googleapis": "^40.0.0",
+    "jsdom": "^16.1.0",
     "ngeohash": "^0.6.3",
     "node-dynamodb-orm": "^0.0.5",
     "serverless": "^1.48.2",
