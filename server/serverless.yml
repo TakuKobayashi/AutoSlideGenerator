@@ -10,19 +10,41 @@ plugins:
   - serverless-dynamodb-local
   - serverless-offline
 
+resources:
+  Resources:
+    usersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: resources
+        AttributeDefinitions:
+          - AttributeName: resource_type
+            AttributeType: S
+          - AttributeName: url
+            AttributeType: S
+        KeySchema:
+          - AttributeName: resource_type
+            KeyType: HASH
+          - AttributeName: url
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+
 custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
   dynamodb:
-    # If you only want to use DynamoDB Local in some stages, declare them here
+  # If you only want to use DynamoDB Local in some stages, declare them here
     stages:
       - dev
     start:
-      port: 8000
+      port: 8010
       inMemory: true
       heapInitial: 200m
       heapMax: 1g
-      migrate: true
-      seed: true
       convertEmptyValues: true
+      migrate: true
   dotenv:
     path: ./.env
     include:
@@ -40,23 +62,16 @@ provider:
   name: aws
   runtime: nodejs10.x
   region: ap-northeast-1
+  apiGateway:
+    minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
 
 functions:
-  slide-generate:
-    handler: lambda/slide-generate/index.handler
-    memorySize: 256
-    timeout: 900
-    events:
-      - http:
-          method: post
-          path: slide/generate
-          cors: true
-
-  google-oauth:
-    handler: lambda/google-oauth/index.handler
+  app:
+    handler: src/app.handler
     memorySize: 128
     timeout: 900
     events:
-      - http:
-          method: get
-          path: google/oauth
+      - http: ANY /
+      - http: ANY /{proxy+}

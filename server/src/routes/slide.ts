@@ -1,19 +1,23 @@
-import { APIGatewayProxyHandler } from 'aws-lambda';
-import 'source-map-support/register';
+import { NextFunction, Request, Response } from 'express';
 
-//const requireRoot = require('app-root-path').require;
-//const googleImageSearch = requireRoot('/libs/googleImageSearch');
-//const frickrSearch = requireRoot('/libs/frickrSearch');
-//const twitterStatus = requireRoot('/libs/twitterStatus');
-//const googleSlides = requireRoot('/libs/googleSlides');
-import { searchGoogleToObjects } from '../../libs/googleImageSearch';
-//import { searchFlickrPhotos, convertToPhotoToObject } from '../../libs/frickrSearch';
-import { searchResourceTweets, convertStatusesToResourcesObject } from '../../libs/twitterStatus';
-import { createPresentationAndSlides } from '../../libs/googleSlides';
+import { searchGoogleToObjects } from '../libs/googleImageSearch';
+//import { searchFlickrPhotos, convertToPhotoToObject } from '../libs/frickrSearch';
+import { searchResourceTweets, convertStatusesToResourcesObject } from '../libs/twitterStatus';
+import { createPresentationAndSlides } from '../libs/googleSlides';
 
-export const handler: APIGatewayProxyHandler = async (event, _context) => {
-  console.log(event);
-  const requestOption = JSON.parse(event.body);
+const express = require('express');
+const slideRouter = express.Router();
+
+slideRouter.get('/', (req: Request, res: Response, next: NextFunction) => {
+  res.send('hello twitter');
+});
+
+slideRouter.get('/list', (req: Request, res: Response, next: NextFunction) => {
+  res.send('hello twitter');
+});
+
+slideRouter.post('/generate', async (req: Request, res: Response, next: NextFunction) => {
+  const requestOption = JSON.parse(req.body);
   console.log(requestOption);
 
   const googleAccessToken = requestOption.googleAccessToken;
@@ -56,11 +60,7 @@ export const handler: APIGatewayProxyHandler = async (event, _context) => {
     presentationProperty,
     imageResources,
   );
-  return {
-    statusCode: 200,
-    headers: {
-      'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-    },
-    body: JSON.stringify(presentation),
-  };
-};
+  res.json(presentation);
+});
+
+export { slideRouter };
