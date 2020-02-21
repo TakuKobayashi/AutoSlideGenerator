@@ -7,7 +7,8 @@ const Flickr = require('flickr-sdk');
 
 const FLICKR_PHOTO_ROOT_URL = 'https://www.flickr.com/photos/';
 const PER_PAGE_COUNT = 500;
-const EXTRA_OPTIONS = 'description, date_upload, date_taken, owner_name, original_format, geo, tags, o_dims, url_sq, url_t, url_s, url_q, url_m, url_n, url_z, url_c, url_l, url_o';
+const EXTRA_OPTIONS =
+  'description, date_upload, date_taken, owner_name, original_format, geo, tags, o_dims, url_sq, url_t, url_s, url_q, url_m, url_n, url_z, url_c, url_l, url_o';
 const LIMIT_SEARCH_MILLISECOND = 240000;
 const MAX_REQUEST_SLEEP_MILLISECOND = 1000;
 

@@ -3,7 +3,8 @@ import { load } from 'cheerio';
 import axios, { AxiosResponse } from 'axios';
 import { CandidateWebsite, ResourceResult, ReverseImageObject, WebsiteResource } from './interfaces/resourceResult';
 
-const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36';
+const USER_AGENT =
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36';
 const GOOGLE_REVERSE_SEARCH_ROOT_URL = 'https://www.google.co.jp/searchbyimage';
 
 export async function searchReverseImages(searchParams: { [s: string]: any }): Promise<ResourceResult> {

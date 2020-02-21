@@ -2,7 +2,7 @@ export interface ResourceResult {
   websites?: WebsiteResource[];
   images?: ImageResource[];
   videos?: VideoResource[];
-  reverse_images?: ReverseImageObject,
+  reverse_images?: ReverseImageObject;
 }
 
 export interface ReverseImageObject {
@@ -13,11 +13,11 @@ export interface ReverseImageObject {
   relative_image_search_query: string;
 }
 
-export interface CandidateWebsite extends WebsiteResource{
+export interface CandidateWebsite extends WebsiteResource {
   keyword: string;
 }
 
-export interface TwitterWebsiteResource extends WebsiteResource{
+export interface TwitterWebsiteResource extends WebsiteResource {
   id: string;
   user_id: string;
   user_name: string;

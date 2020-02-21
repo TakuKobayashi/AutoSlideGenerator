@@ -1,9 +1,4 @@
-import {
-  ResourceResult,
-  TwitterImageResource,
-  TwitterVideoResource,
-  TwitterWebsiteResource,
-} from './interfaces/resourceResult';
+import { ResourceResult, TwitterImageResource, TwitterVideoResource, TwitterWebsiteResource } from './interfaces/resourceResult';
 import * as Twitter from 'twitter';
 
 const TWITTER_ROOT_URL = 'https://twitter.com/';
@@ -24,10 +19,7 @@ export async function getTweets(apiPath: string, searchParams: { [s: string]: an
       delete searchParams[key];
     }
   }
-  const result = await newTwitter().get(
-    apiPath,
-    searchParams,
-  );
+  const result = await newTwitter().get(apiPath, searchParams);
   return result as Twitter.ResponseData;
 }
 
