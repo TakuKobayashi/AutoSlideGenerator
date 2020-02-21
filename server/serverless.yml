@@ -17,15 +17,11 @@ resources:
       Properties:
         TableName: resources
         AttributeDefinitions:
-          - AttributeName: resource_type
-            AttributeType: S
           - AttributeName: url
             AttributeType: S
         KeySchema:
-          - AttributeName: resource_type
-            KeyType: HASH
           - AttributeName: url
-            KeyType: RANGE
+            KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5
